@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "open-os AI Browser Extension",
+  "version": "0.3",
+  "description": "Quick access to your favorite AI language model from your browser (OpenAI). ChatGPT will be added when available.",
+  "icons": {
+    "128": "open-os-128.png"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "open-os.html",
+    "default_icon": "open-os.png"
+  }
+}
+

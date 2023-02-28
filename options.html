@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>open-os Options</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7CBitter%3A400%2C700&display=swap" rel="stylesheet">
+    <style>
+
+      body {
+
+        font-family: Montserrat, Helvetica, sans-serif;
+        background-color: #f2f2f2;
+        background-image: url('back-open-os.jpg');
+        background-size: cover;
+      }
+      h1 {
+        text-align: center;
+        font-size: 30px;
+        font-weight: 300;
+        color: #545454;
+        margin-bottom: 30px;
+        margin-top: 10px;
+
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+
+      textarea {
+        display: block;
+        margin-top: 10px;
+        width: 100%;
+        min-height: 60px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+      }
+
+      input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+      }
+      button[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      #options-frame {
+        width: 600px;
+        border: 2px solid #d6d6d6;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 30px auto;
+        background-color: #f2f2f2;
+      }
+      #options-frame h3 {
+        margin-top: 0;
+      }
+
+      #about {
+        font-size: 12px;
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="options-frame">
+    <h1 id="options-title"><b>open-os</b> Extension Options</h1>
+    <div id="about">
+      <p>Small open source extension for Edge, Firefox and Chrome to quickly access to your favorite AI LLM assistan while browsing.</p>
+      <p>This beta is configured for OpenAI's davinci-3. Other providers, such as the ChatGPT API, will be added as they become available. </p>
+      <p>Simply click on the extension icon and start chatting with your virtual assistant. You can customize the personality of your bot with pre-prompts, making it more personalized and engaging. All these settings will be synchronized in all your browsers.</p>
+      <p>Extension has been developed and is maintained by <a href="https://twitter.com/luishg/" target="_blank">@luishg</a> with the help of ChatGPT and Github Copilot. The source code will be available soon.</p>
+      <p>For more info visit <a href="https://www.open-os.com" target="_blank">open-os.com</a></p>
+    </div>
+    <form id="options-form">
+      <label for="api-key-input">OpenAI API_KEY (get your API-KEY here <a href="https://platform.openai.com/account/api-keys" target="_blank">https://platform.openai.com/account/api-keys</a>):</label>
+      <input type="text" id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
+      
+      <label for="ai-engine-select">AI Engine/Model:</label>
+      <select id="ai-engine-select" name="ai_engine">
+        <option value="engine1" selected>text-davinci-003</option>
+      </select>
+
+      <label for="char-select">Character:</label>
+      <select id="char-select" name="char-select">
+        <option value="helpbot" selected>Help Bot</option>
+        <option value="datemode">Date Mode</option>
+      </select>
+      <label for="ai-engine-select">Pre-prompt (you can customize this previous prompt):</label>
+
+      <textarea id="pre-prompt">Im am open-os, a help bot to solve any questiom you may have in any langguage I know.</textarea>
+      
+      <button type="submit">Save</button>
+    </form>
+    
+    <script src="options.js"></script>
+
+    </div>
+  </body>
+</html>
