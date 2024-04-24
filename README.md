@@ -1,5 +1,5 @@
 # open-os
-Quick access to any large language model from your browser.
+Quick access to any local large language model from your browser.
  
 This beta is configured for OpenAI's davinci-3. Other providers, such as the ChatGPT API, will be added as they become available.
 
