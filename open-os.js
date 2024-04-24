@@ -108,7 +108,7 @@ getApiKey().then(() => {
 });
 
 function initScript() {
-  MODEL_ID = 'text-davinci-003';
+  MODEL_ID = 'llama3:8b';
   chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected"], function(result){
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
@@ -117,9 +117,9 @@ function initScript() {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';
       chatlog.appendChild(chatEntry);
-      settings.innerHTML = 'OpenAI: text-davinci-003 | API-KEY: Not Set | Character: '+ result.char_selected+' | v: '+version;
+      settings.innerHTML = 'Ollama: llama3:8b | API-KEY: Not Set | Character: '+ result.char_selected+' | v: '+version;
     } else {
-      settings.innerHTML = 'OpenAI: text-davinci-003 | API-KEY: Set | Character: '+ result.char_selected+' | v: '+version;
+      settings.innerHTML = 'Ollama: llama3:8b | API-KEY: Set | Character: '+ result.char_selected+' | v: '+version;
     }
    
   });
