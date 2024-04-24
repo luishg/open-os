@@ -1,5 +1,5 @@
 let API_KEY = '';
-let MODEL_ID = 'text-davinci-003';
+let MODEL_ID = 'llama-3';
 let conversationHistory = '';
 var version = chrome.runtime.getManifest().version;
 
