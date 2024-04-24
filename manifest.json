@@ -10,6 +10,12 @@
   "permissions": [
     "storage"
   ],
+  "host_permissions": [
+    "http://*:11434/api/tags",
+    "http://*:11434/api/generate",
+    "https://*:11434/api/tags",
+    "https://*:11434/api/generate"
+  ],
   "action": {
     "default_popup": "open-os.html",
     "default_icon": "open-os.png"

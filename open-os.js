@@ -2,6 +2,73 @@ let API_KEY = '';
 let MODEL_ID = 'llama-3';
 let conversationHistory = '';
 var version = chrome.runtime.getManifest().version;
+var ollama_host = 'http://localhost:11434'
+
+
+
+// Function to send a POST request to the Ollama API
+function postRequest(data, signal) {
+  const URL = `${ollama_host}/api/generate`;
+  return fetch(URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    signal: signal
+  });
+}
+
+// Ollama API request model
+async function getModels(){
+  const response = await fetch(`${ollama_host}/api/tags`);
+  const data = await response.json();
+  return data;
+}
+
+
+// Fetch available models and populate the dropdown
+async function populateModels() {
+  //document.getElementById('send-button').addEventListener('click', submitRequest);
+
+  try {
+    const data = await getModels();
+
+    const selectElement = document.getElementById('model-select');
+
+    // set up handler for selection
+    //selectElement.onchange = (() => updateModelInQueryString(selectElement.value));
+
+    data.models.forEach((model) => {
+      const option = document.createElement('option');
+      option.value = model.name;
+      option.innerText = model.name;
+      selectElement.appendChild(option);
+    });
+
+    // select option present in url parameter if present
+    const queryParams = new URLSearchParams(window.location.search);
+    const requestedModel = queryParams.get('model');
+    // update the selection based on if requestedModel is a value in options
+    if ([...selectElement.options].map(o => o.value).includes(requestedModel)) {
+      selectElement.value = requestedModel;
+    }
+    // otherwise set to the first element if exists and update URL accordingly
+    else if (selectElement.options.length) {
+      selectElement.value = selectElement.options[0].value;
+      //updateModelInQueryString(selectElement.value);
+    }
+  }
+  catch (error) {
+    document.getElementById('chatlog').innerHTML = `Open-os was unable to communitcate with Ollama due to the following error:\n\n`
+    + `\`\`\`${error.message}\`\`\`\n\n---------------------\n`
+  }
+}
+
+
+
+
+
 
 
 async function getApiKey() {
@@ -109,9 +176,11 @@ getApiKey().then(() => {
 
 function initScript() {
   MODEL_ID = 'llama3:8b';
+  populateModels();
   chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected"], function(result){
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
+    API_KEY = 'force-llama3:8b';
     //MODEL_ID = result.ai_engine;
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');

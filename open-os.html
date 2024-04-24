@@ -64,12 +64,17 @@
   <body>
     <h1><b>open-os</b> AI LLM Browser Extension</h1>
     <p id="settings">Ollama: Llama-3:8B | API-KEY: Not Set | Character: Help Bot</p>
+    <div class="d-flex align-items-center mb-2">
+      <label for="model-select" class="form-label me-2" style="font-size: smaller;">Model:</label>
+      <select class="form-select" id="model-select" style="width: auto;"></select>
+  </div>
     <div id="chatlog">open-os: ready.</div>
     <div>
       <input type="text" id="prompt" placeholder="Type here and hit [enter]">
       <button id="submit">send</button>
       <button id="options">options (api-key)</button>
     </div>
+
     <script src="open-os.js"></script>
   </body>
 </html>
