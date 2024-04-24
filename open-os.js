@@ -71,6 +71,7 @@ async function populateModels() {
 
 
 
+//DEPRECATED
 async function getApiKey() {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get('api_key', (result) => {
@@ -100,7 +101,7 @@ async function getApiKey() {
     });
   });
 }
-
+//DEPRECATED
 async function sendMessage(prompt) {
   //const completePrompt = conversationHistory + '\nHuman: ' + prompt;
   conversationHistory += '\nHuman: ' + prompt + "\nOpen-OS:";
@@ -135,7 +136,7 @@ const settings = document.getElementById('settings');
 const promptInput = document.getElementById('prompt');
 const submitButton = document.getElementById('submit');
 const optionsButton = document.getElementById('options');
-
+//DEPRECATED
 async function submitPrompt () {
 
   const prompt = promptInput.value;
