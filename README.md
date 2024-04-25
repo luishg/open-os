@@ -1,7 +1,7 @@
 # open-os
 Quick access to any local large language model from your browser.
  
-This beta is configured for OpenAI's davinci-3. Other providers, such as the ChatGPT API, will be added as they become available.
+This beta is configured for Ollama models. Other providers, such as the ChatGPT API, will be added as they become available.
 
 Simply click on the extension icon and start chatting with your virtual assistant. You can customize the personality of your bot with pre-prompts, making it more personalized and engaging. All these settings will be synchronized in all your browsers.
 
