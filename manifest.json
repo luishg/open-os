@@ -1,24 +1,35 @@
 {
   "manifest_version": 3,
   "name": "open-os AI Browser Extension",
-  "version": "0.4",
+  "version": "0.5",
   "description": "Quick access to your favorite local LLM from your browser (Ollama).",
   "icons": {
     "128": "open-os-128.png"
   },
   "options_page": "options.html",
   "permissions": [
-    "storage"
+    "storage",
+    "sidePanel",
+    "contextMenus",
+    "declarativeNetRequest"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "host_permissions": [
     "http://*:11434/api/tags",
     "http://*:11434/api/generate",
     "https://*:11434/api/tags",
     "https://*:11434/api/generate"
   ],
+  
+  "side_panel": {
+    "default_path": "panel.html",
+    "openPanelOnActionClick": true
+  },
   "action": {
-    "default_popup": "open-os.html",
-    "default_icon": "open-os.png"
+    "default_title": "Click to open panel"
   }
+  
 }
 
