@@ -5,7 +5,8 @@
     <style>
 
       body {
-        width: 500px;
+        width: 90%;
+        padding: 10px;
         font-family: Montserrat, Helvetica, sans-serif;
         background-color: #f2f2f2;
         }
@@ -44,7 +45,7 @@
         border: 1px solid #ddd;
         border-radius: 4px;
         margin-top: 0.5rem;
-        width: 480px;
+        
       }
       button {
         padding: 0.5rem 1rem;
@@ -59,20 +60,27 @@
       button:hover {
         background-color: #0069d9;
       }
+      #model-select {
+        padding: 0.5rem;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        margin-right: 0.5rem;
+        width: 480px;
+        float: right;
+      }
     </style>
   </head>
   <body>
     <h1><b>open-os</b> AI LLM Browser Extension</h1>
     <p id="settings">Ollama: Llama-3:8B | API-KEY: Not Set | Character: Help Bot</p>
-    <div class="d-flex align-items-center mb-2">
-      <label for="model-select" class="form-label me-2" style="font-size: smaller;">Model:</label>
-      <select class="form-select" id="model-select" style="width: auto;"></select>
-  </div>
     <div id="chatlog">open-os: ready.</div>
     <div>
       <input type="text" id="prompt" placeholder="Type here and hit [enter]">
       <button id="submit">send</button>
       <button id="options">options (api-key)</button>
+      <select class="form-select" id="model-select" style="width: auto;"></select>
     </div>
 
     <script src="open-os.js"></script>

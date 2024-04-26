@@ -38,7 +38,6 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 } 
 
 
-
 // API Function to send a POST request to the Ollama
 async function postRequest(data) {
   const URL = `${ollama_host}/api/generate`;
@@ -101,6 +100,20 @@ async function getModels(){
   return data;
 }
 
+/*
+takes in model as a string
+updates the query parameters of page url to include model name
+*/
+function updateModelInQueryString(model) {
+  // make sure browser supports features
+  if (window.history.replaceState && 'URLSearchParams' in window) {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("model", model);
+    // replace current url without reload
+    const newPathWithQuery = `${window.location.pathname}?${searchParams.toString()}`
+    window.history.replaceState(null, '', newPathWithQuery);
+  }
+}
 
 // Fetch available models and populate the dropdown
 async function populateModels() {
@@ -112,7 +125,7 @@ async function populateModels() {
     const selectElement = document.getElementById('model-select');
 
     // set up handler for selection
-    //selectElement.onchange = (() => updateModelInQueryString(selectElement.value));
+    selectElement.onchange = (() => updateModelInQueryString(selectElement.value));
 
     data.models.forEach((model) => {
       const option = document.createElement('option');
@@ -139,11 +152,6 @@ async function populateModels() {
     + `\`\`\`${error.message}\`\`\`\n\n---------------------\n`
   }
 }
-
-
-
-
-
 
 
 
@@ -177,6 +185,7 @@ async function getApiKey() {
     });
   });
 }
+
 //DEPRECATED
 async function sendMessage(prompt) {
   //const completePrompt = conversationHistory + '\nHuman: ' + prompt;
@@ -299,7 +308,6 @@ async function submitRequest() {
 
  
 }
-
 
 
 submitButton.addEventListener('click', async () => {
