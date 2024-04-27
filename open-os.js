@@ -113,6 +113,13 @@ function updateModelInQueryString(model) {
     const newPathWithQuery = `${window.location.pathname}?${searchParams.toString()}`
     window.history.replaceState(null, '', newPathWithQuery);
   }
+
+  chrome.storage.local.set({'model': model}, () => {
+    console.log('Model updated manually to ' + model);
+  });
+  MODEL_ID = model;
+  updateSettingString();
+
 }
 
 // Fetch available models and populate the dropdown
@@ -134,18 +141,23 @@ async function populateModels() {
       selectElement.appendChild(option);
     });
 
-    // select option present in url parameter if present
-    const queryParams = new URLSearchParams(window.location.search);
-    const requestedModel = queryParams.get('model');
-    // update the selection based on if requestedModel is a value in options
-    if ([...selectElement.options].map(o => o.value).includes(requestedModel)) {
-      selectElement.value = requestedModel;
-    }
-    // otherwise set to the first element if exists and update URL accordingly
-    else if (selectElement.options.length) {
-      selectElement.value = selectElement.options[0].value;
-      //updateModelInQueryString(selectElement.value);
-    }
+
+
+    chrome.storage.local.get('model', (result) => {
+      
+      if (result.model !== undefined && result.model !== '') {
+        selectElement.value = result.model; // set to stored value if present
+        MODEL_ID = result.model;
+       } else { 
+        // otherwise set to the first element if exists and update URL accordingly
+        selectElement.value = selectElement.options[0].value;; // otherwise set to the first element if exists
+        MODEL_ID = selectElement.options[0].value;
+      }
+      updateSettingString();
+    
+    });
+
+
   }
   catch (error) {
     document.getElementById('chatlog').innerHTML += `Open-os was unable to communitcate with Ollama (populating models) due to the following error:\n\n`
@@ -333,21 +345,26 @@ getApiKey().then(() => {
   submitButton.disabled = false;
 });
 
+function updateSettingString() {
+
+  settings.innerHTML = 'Model: '+ MODEL_ID +' | Host: '+ollama_host+' | v: '+version;
+}
+
 function initScript() {
-  MODEL_ID = 'llama3:8b';
+  MODEL_ID = '';
   populateModels();
   chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected"], function(result){
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
-    API_KEY = 'force-llama3:8b';
+    API_KEY = 'force';
     //MODEL_ID = result.ai_engine;
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';
       chatlog.appendChild(chatEntry);
-      settings.innerHTML = 'Ollama: llama3:8b | API-KEY: Not Set | Character: '+ result.char_selected+' | v: '+version;
+      updateSettingString();
     } else {
-      settings.innerHTML = 'Ollama: llama3:8b | API-KEY: Set | Character: '+ result.char_selected+' | v: '+version;
+      updateSettingString();
     }
    
   });
