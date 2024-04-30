@@ -1,3 +1,14 @@
+const faqString = `
+<br></br>
+<strong>Make sure you have installed Ollama and it is running</strong>
+
+<ul>
+  <li>Download and installation: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
+  <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
+</ul>
+`;
+
+
 let API_KEY = '';
 let MODEL_ID = 'llama-3';
 let conversationHistory = '';
@@ -153,6 +164,8 @@ async function populateModels() {
         selectElement.value = selectElement.options[0].value;; // otherwise set to the first element if exists
         MODEL_ID = selectElement.options[0].value;
       }
+      document.getElementById('chatlog').innerHTML +=  ' <b>'+MODEL_ID + '</b> loaded.';
+      document.getElementById('chatlog').classList.remove('spinner');
       updateSettingString();
     
     });
@@ -160,12 +173,12 @@ async function populateModels() {
 
   }
   catch (error) {
-    document.getElementById('chatlog').innerHTML += `Open-os was unable to communitcate with Ollama (populating models) due to the following error:\n\n`
-    + `\`\`\`${error.message}\`\`\`\n\n---------------------\n`
+    document.getElementById('chatlog').innerHTML += '<br></br> Unable to communitcate with Ollama: ' + error.message;
+
+
+    document.getElementById('chatlog').innerHTML += faqString;
   }
 }
-
-
 
 //DEPRECATED
 async function getApiKey() {
@@ -243,7 +256,7 @@ async function submitPrompt () {
   //chatlog.appendChild(chatEntry);
   const response = await sendMessage(prompt);
   const responseEntry = document.createElement('p');
-  responseEntry.textContent = 'open-os: ' + response;
+  responseEntry.textContent = '<b>open-os:</b> ' + response;
   chatlog.appendChild(responseEntry);
   //scroll to bottom of page
   window.scrollTo(0,document.body.scrollHeight);
@@ -254,6 +267,7 @@ async function submitPrompt () {
 // Function to handle the user input and call the API functions
 async function submitRequest() {
 
+  
   const input = promptInput.value;
   promptInput.value = '';
   const selectedModel = document.getElementById('model-select').value;
@@ -262,13 +276,15 @@ async function submitRequest() {
 
   //Add user input to chatlog
   const chatEntry = document.createElement('p');
-  chatEntry.textContent = 'Human: ' + input;
+  chatEntry.innerHTML = "<b>Human:</b> " + input;
   chatlog.appendChild(chatEntry);
 
   //Add LLM response to chatlog
   let chatResponse = document.createElement('p');
-  chatResponse.innerHTML += 'open-os: ';
+  chatResponse.innerHTML += '<b>open-os:</b> ';
   chatlog.appendChild(chatResponse);
+
+  chatResponse.classList.add('spinner');
 
   const data = { model: selectedModel, prompt: input, context: context};
 
@@ -279,6 +295,9 @@ async function submitRequest() {
 
       if (parsedResponse.done) {
         chatlog.context = parsedResponse.context;
+        chatResponse.classList.remove('spinner');
+        window.scrollTo(0, document.body.scrollHeight);
+
       }
 
       // add word to response
@@ -335,6 +354,7 @@ function initScript() {
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
     API_KEY = 'force';
+    document.getElementById('chatlog').classList.add('spinner');
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';

@@ -5,7 +5,6 @@
     <style>
 
       body {
-        width: 90%;
         padding: 10px;
         font-family: Montserrat, Helvetica, sans-serif;
         background-color: #f2f2f2;
@@ -65,21 +64,37 @@
         font-size: 12px;
         border: 1px solid #ddd;
         border-radius: 4px;
-        margin-top: 1rem;
-        margin-right: 0.5rem;
+        margin-top: 14px;
         width: 480px;
         float: right;
       }
+
+      @keyframes spinner {
+        to {transform: rotate(360deg);}
+      }
+      
+      .spinner:before {
+        content: '';
+        box-sizing: border-box;
+        float: right;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        border-top-color: #000;
+        animation: spinner .6s linear infinite;
+      }
+
     </style>
   </head>
   <body>
     <h1><b>open-os</b> LLM Browser Extension</h1>
     <p id="settings">NOT INITIALIZED</p>
-    <div id="chatlog">open-os: ready.</div>
+    <div id="chatlog"><b>open-os:</b> connecting...</div>
     <div>
       <input type="text" id="prompt" placeholder="Type here and hit [enter]">
       <button id="submit">send</button>
-      <button id="options">options (api-key)</button>
+      <button id="options">options</button>
       <select class="form-select" id="model-select" style="width: auto;"></select>
     </div>
 

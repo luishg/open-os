@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "open-os AI Browser Extension",
+  "name": "open-os LLM Browser Extension",
   "version": "0.5",
   "description": "Quick access to your favorite local LLM from your browser (Ollama).",
   "icons": {
