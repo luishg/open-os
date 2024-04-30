@@ -14,11 +14,11 @@ function openSidePanel() {
 }
 
 // Create a new context menu item to open in a side panel.
-chrome.contextMenus.create({
-  id: "openPanel",
-  title: "Open Panel",
-  contexts: ["all"]
-});
+//chrome.contextMenus.create({
+//  id: "openPanel",
+//  title: "Open Panel",
+//  contexts: ["all"]
+//});
 
 // Create another context menu item to open in a new tab.
 chrome.contextMenus.create({
@@ -40,3 +40,6 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));

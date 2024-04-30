@@ -1,4 +1,4 @@
-const faqString = `
+const notFoundString = `
 <br></br>
 <strong>Make sure you have installed Ollama and it is running</strong>
 
@@ -6,6 +6,30 @@ const faqString = `
   <li>Download Olama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
   <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
 </ul>
+`;
+
+const notResponseString = `
+<br><br>
+
+
+<strong>Make sure you have installed Ollama and it is running</strong>
+
+<ul>
+  <li>Download Olama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
+  <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
+</ul>
+</br>
+<strong>Compatible Browsers</strong>
+
+<p>
+Some browsers like Edge do not allow communication with Ollama from the side panel. Try opening the extension in a new tab with a right click on the icon.</p>
+</br>
+<strong>Not getting responses? How to expose the Ollama server.</strong>
+      <p>By default, Ollama allows cross origin requests from 127.0.0.1 and 0.0.0.0.</p>
+      <p>To support more origins, you can use the <code>OLLAMA_ORIGINS</code> environment variable: ${window.location.origin}</p>
+      <p><a target="_blank" href="https://github.com/ollama/ollama/blob/main/docs/faq.md">https://github.com/ollama/ollama/blob/main/docs/faq.md</a></p>
+
+
 `;
 
 
@@ -69,7 +93,7 @@ async function postRequest(data) {
 
       return response; // Assuming the API returns JSON
   } catch (error) {
-    document.getElementById('chatlog').innerHTML += 'Failed to post request: '+ error;
+    document.getElementById('chatlog').innerHTML += 'Failed to post request '+ollama_host+' ';
       throw error; // Rethrow or handle as needed
   }
 }
@@ -176,7 +200,7 @@ async function populateModels() {
     document.getElementById('chatlog').innerHTML += '<br></br> Unable to communitcate with Ollama: ' + error.message;
 
 
-    document.getElementById('chatlog').innerHTML += faqString;
+    document.getElementById('chatlog').innerHTML += notFoundString;
   }
 }
 
@@ -311,8 +335,9 @@ async function submitRequest() {
     })
     .catch(error => {
 
-        document.getElementById('chatlog').innerHTML += `Open-os API error:\n\n`
-    + `\`\`\`${error.message}\`\`\`\n\n---------------------\n`
+        document.getElementById('chatlog').innerHTML += error.message;
+        document.getElementById('chatlog').innerHTML += notResponseString;
+
 
     });
 
