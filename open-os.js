@@ -3,7 +3,7 @@ const faqString = `
 <strong>Make sure you have installed Ollama and it is running</strong>
 
 <ul>
-  <li>Download and installation: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
+  <li>Download Olama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
   <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
 </ul>
 `;
