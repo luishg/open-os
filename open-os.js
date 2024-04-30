@@ -4,7 +4,8 @@ const notFoundString = `
 
 <ul>
   <li>Download Olama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
-  <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
+  <li>Install any of the available models on Ollama. For example, for LLama3 from META, simply type "ollama run llama3:8b" in your OS terminal</li>
+  <li>Llama-3 Installation video tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
 </ul>
 `;
 
@@ -16,6 +17,7 @@ const notResponseString = `
 
 <ul>
   <li>Download Olama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
+  <li>Install any of the available models on Ollama. For example, for LLama3 from META, simply type "ollama run llama3:8b" in your OS terminal</li>
   <li>Llama-3 Installation tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
 </ul>
 </br>
@@ -66,6 +68,11 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
   }
 }
 
+//No warnings for markdown
+marked.use({
+  mangle: false,
+  headerIds: false
+});
 
 //set domain ORIGIN to localhost
 if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
@@ -320,6 +327,7 @@ async function submitRequest() {
       if (parsedResponse.done) {
         chatlog.context = parsedResponse.context;
         chatResponse.classList.remove('spinner');
+        chatResponse.innerHTML = marked.parse(chatResponse.innerHTML);
         window.scrollTo(0, document.body.scrollHeight);
 
       }
