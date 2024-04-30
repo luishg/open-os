@@ -253,56 +253,37 @@ async function submitPrompt () {
 
 // Function to handle the user input and call the API functions
 async function submitRequest() {
-  
- 
 
   const input = promptInput.value;
   promptInput.value = '';
   const selectedModel = document.getElementById('model-select').value;
   const context = document.getElementById('chatlog').context;
+  const chatlog = document.getElementById('chatlog');
 
   //Add user input to chatlog
   const chatEntry = document.createElement('p');
   chatEntry.textContent = 'Human: ' + input;
   chatlog.appendChild(chatEntry);
 
+  //Add LLM response to chatlog
+  let chatResponse = document.createElement('p');
+  chatResponse.innerHTML += 'open-os: ';
+  chatlog.appendChild(chatResponse);
 
   const data = { model: selectedModel, prompt: input, context: context};
-  //document.getElementById('chatlog').innerHTML += `Open-os debug, data:`+ JSON.stringify(data);
-
-
-
-  // Create response container
-  let chatHistory = document.getElementById('chatlog');
-  let responseDiv = document.createElement('div');
-  responseDiv.className = 'response-message mb-2 text-start';
-  responseDiv.style.minHeight = '3em'; // make sure div does not shrink if we cancel the request when no text has been generated yet
-  chatHistory.appendChild(responseDiv);
-
 
   postRequest(data)
   .then(async response => {
     await getResponse(response, parsedResponse => {
       let word = parsedResponse.response;
-      //document.getElementById('chatlog').innerHTML += `Esperando response:`+ word;
-      document.getElementById('chatlog').innerHTML += word;
+
       if (parsedResponse.done) {
-        chatHistory.context = parsedResponse.context;
+        chatlog.context = parsedResponse.context;
+      }
 
       // add word to response
       if (word != undefined) {
-        if (responseDiv.hidden_text == undefined){
-          //responseDiv.hidden_text = "";
-        }
-        responseDiv.hidden_text += word;
-        responseDiv.innerHTML = responseDiv.hidden_text; // Append word to response container
-        
-        
-
-      }
-
-      //document.getElementById('chatlog').innerHTML += `DATO RECIBIDO:`+ word;
-
+        chatResponse.innerHTML += word;
       }
     });
   })
@@ -316,11 +297,8 @@ async function submitRequest() {
 
     });
 
-    
-
  
 }
-
 
 submitButton.addEventListener('click', async () => {
   submitRequest();
@@ -357,7 +335,6 @@ function initScript() {
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
     API_KEY = 'force';
-    //MODEL_ID = result.ai_engine;
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';
