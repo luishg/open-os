@@ -162,7 +162,14 @@
       <p>For more info visit <a target="_blank" href="https://www.open-os.com" target="_blank">open-os.com</a></p>
     </br></br>
     </div>
-    <form id="options-form" style="display: none;">
+    <form id="options-form">
+
+      <label for="theme-select">LLM Model:</label>
+      <select id="theme-select" name="theme">
+        <option value="light" selected>Light Theme</option>
+        <option value="retro">Retro Terminal</option>
+      </select>
+
       <label for="api-key-input">OpenAI API_KEY (deprecated):</label>
       <input type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
       

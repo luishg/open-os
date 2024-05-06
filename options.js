@@ -1,7 +1,7 @@
 // options.js
 var version = chrome.runtime.getManifest().version;
 document.getElementById('options-title').innerHTML = "<b>open-os</b> Extension Options"+" <small>v."+version+"</small>";
-chrome.storage.sync.get(['api_key', 'ai_engine'], function(items) {
+chrome.storage.sync.get(['api_key', 'ai_engine', 'theme'], function(items) {
   if (items.api_key == undefined || items.api_key == '' || items.api_key == "undefined") {  
     document.getElementById('api-key-input').value = '';
   } else {
@@ -12,6 +12,13 @@ chrome.storage.sync.get(['api_key', 'ai_engine'], function(items) {
   } else {
     document.getElementById('ai-engine-select').value = items.ai_engine;
   }
+  if (items.theme == 'retro') {
+    document.getElementById('theme-select').value = items.theme;
+  } else {
+    //document.getElementById('theme-select').value = items.theme;
+  }
+
+
 });
 
 
@@ -28,6 +35,14 @@ document.getElementById('char-select').addEventListener('change', function() {
   }
 });
 
+
+document.getElementById('theme-select').addEventListener('change', function() {
+  var theme = document.getElementById('theme-select').value;
+
+    chrome.storage.sync.set({'theme': theme}, function() {      
+    });
+
+});
 
 document.getElementById('options-form').addEventListener('submit', function(e) {
   e.preventDefault();

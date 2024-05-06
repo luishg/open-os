@@ -383,11 +383,16 @@ function updateSettingString() {
 function initScript() {
   MODEL_ID = '';
   populateModels();
-  chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected"], function(result){
+  chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected", "theme"], function(result){
     conversationHistory = 'open-os: '+ result.pre_prompt;
     API_KEY = result.api_key;
     API_KEY = 'force';
     document.getElementById('chatlog').classList.add('spinner');
+    if (result.theme == 'retro') {
+      document.getElementById('theme').href = 'retro.css';
+    } else {
+      document.getElementById('theme').href = 'light.css';
+    }
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';
