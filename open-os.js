@@ -380,6 +380,30 @@ function updateSettingString() {
   settings.innerHTML = 'Model: '+ MODEL_ID +' | Host: '+ollama_host+' | v: '+version;
 }
 
+
+
+// Theme updates from options page
+chrome.storage.sync.get('theme', function(data) {
+  applyTheme(data.theme);
+});
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  if (changes.theme) {
+    applyTheme(changes.theme.newValue);
+  }
+});
+
+function applyTheme(theme) {
+  var themeStyle = document.getElementById('theme');
+  if (theme == 'retro') {
+    themeStyle.href = 'retro.css';
+  } else if (theme == 'dark') {
+    themeStyle.href = 'dark.css';
+  } else {
+    themeStyle.href = 'light.css';
+  }
+}
+
 function initScript() {
   MODEL_ID = '';
   populateModels();
@@ -390,6 +414,8 @@ function initScript() {
     document.getElementById('chatlog').classList.add('spinner');
     if (result.theme == 'retro') {
       document.getElementById('theme').href = 'retro.css';
+    } if (result.theme == 'dark') {
+        document.getElementById('theme').href = 'dark.css';
     } else {
       document.getElementById('theme').href = 'light.css';
     }
