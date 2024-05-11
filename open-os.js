@@ -412,13 +412,7 @@ function initScript() {
     API_KEY = result.api_key;
     API_KEY = 'force';
     document.getElementById('chatlog').classList.add('spinner');
-    if (result.theme == 'retro') {
-      document.getElementById('theme').href = 'retro.css';
-    } if (result.theme == 'dark') {
-        document.getElementById('theme').href = 'dark.css';
-    } else {
-      document.getElementById('theme').href = 'light.css';
-    }
+    applyTheme(result.theme)
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
       chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';

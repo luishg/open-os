@@ -1,10 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=VT323');
+@import url('https://fonts.googleapis.com/css?family=Orbitron');
 
+@font-face {
+  font-family: MorePerfectDOSVGA;
+  src: url(MorePerfectDOSVGA.ttf);
+}
 
 body {
   font-size:20px;
     padding: 10px;
-    font-family:"VT323",monospace;
+    font-family:"MorePerfectDOSVGA";
     background-color: black;
     background-image: radial-gradient(
       rgba(31, 43, 31, 0.75), black 120%
@@ -98,12 +102,31 @@ h1 {
 }
 
 #chatlog {
-    border: 1px solid #67ab6b;
+    border: 1px solid #1d331f;
+    border-radius: 4px;
     padding: 1rem;
     margin: 1rem 0;
     overflow: auto;
     background-color: #000;
     color: #67ab6b;
+}
+
+#chatlog:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+      to bottom,
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 2px;
+  z-index: 2;
+  pointer-events: none;
 }
 
 #settings {
@@ -122,9 +145,10 @@ label {
 }
 
 input[type="text"] {
+    font-family:"MorePerfectDOSVGA";
+    font-size: 20px;
     padding: 0.5rem;
-    
-    border: 1px solid #0F0;
+    border: 1px solid #1d331f;;
     border-radius: 4px;
     margin-top: 0.5rem;
     width: 50%;
@@ -133,6 +157,8 @@ input[type="text"] {
 }
 
 button {
+    font-family:"MorePerfectDOSVGA";
+    font-size: 20px;
     padding: 0.5rem 1rem;
     
     background-color: #67ab6b;
@@ -148,6 +174,8 @@ button:hover {
 }
 
 #model-select {
+    font-family:"MorePerfectDOSVGA";
+    font-size: 20px;
     padding: 0.5rem;
     
     color: rgb(204, 240, 204);
