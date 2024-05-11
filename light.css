@@ -15,6 +15,7 @@ body {
 
   #chatlog {
     border: 1px solid #ddd;
+    border-radius: 4px;
     padding: 1rem;
     margin: 1rem 0;
     overflow: auto;
