@@ -5,7 +5,7 @@ body {
     }
     h1 {
     text-align: center;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 300;
     color: #545454;
     margin-bottom: 20px;
@@ -19,10 +19,11 @@ body {
     padding: 1rem;
     margin: 1rem 0;
     overflow: auto;
+    color:#545454;
   }
   #settings {
     text-align: center;
-    font-size: 11px;
+    font-size: 0.8rem;
     color: #979797;
     margin-bottom: 22px;
     margin-top: 0px;
@@ -34,35 +35,36 @@ body {
     font-weight: bold;
   }
   input[type="text"] {
-    padding: 0.5rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-top: 0.5rem;
+    margin-right: 2px;
     width: 50%;
     
   }
   button {
-    padding: 0.5rem 1rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
     margin-top: 1rem;
+    margin-right: 1px;
     cursor: pointer;
   }
   button:hover {
     background-color: #0069d9;
   }
   #model-select {
-    padding: 0.5rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin-top: 14px;
+    margin-top: 1rem;
     width: 480px;
-    float: right;
   }
 
   @keyframes spinner {

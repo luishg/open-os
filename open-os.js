@@ -382,14 +382,18 @@ function updateSettingString() {
 
 
 
-// Theme updates from options page
-chrome.storage.sync.get('theme', function(data) {
+// Theme and font size updates from options page
+chrome.storage.sync.get(['theme', 'fontSize'], function(data) {
   applyTheme(data.theme);
+  applyFontSize(data.fontSize);
 });
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
   if (changes.theme) {
     applyTheme(changes.theme.newValue);
+  }
+  if (changes.fontSize) {
+    applyFontSize(changes.fontSize.newValue);
   }
 });
 
@@ -402,6 +406,17 @@ function applyTheme(theme) {
   } else {
     themeStyle.href = 'light.css';
   }
+}
+
+function applyFontSize(fontSize) {
+  document.documentElement.style.fontSize = fontSize + 'px';
+  if (fontSize) {
+    document.body.style.fontSize = fontSize + 'px'; 
+  }else {
+    document.body.style.fontSize = '14px'; 
+  }
+
+
 }
 
 function initScript() {

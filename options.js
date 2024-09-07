@@ -44,6 +44,14 @@ document.getElementById('theme-select').addEventListener('change', function() {
 
 });
 
+document.getElementById('font-size-select').addEventListener('change', function() {
+  //document.body.style.fontSize = this.value + 'px';
+  document.body.style.fontSize = fontSize + 'px';
+  var fontSize = document.getElementById('font-size-select').value;
+  chrome.storage.sync.set({'fontSize': fontSize}, function() {      
+  });
+});
+
 document.getElementById('options-form').addEventListener('submit', function(e) {
   e.preventDefault();
   

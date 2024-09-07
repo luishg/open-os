@@ -7,7 +7,7 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 300;
     color: #f2f2f2;
     margin-bottom: 20px;
@@ -26,7 +26,7 @@ h1 {
 
 #settings {
     text-align: center;
-    font-size: 11px;
+    font-size: 0.8rem;
     color: #ddd;
     margin-bottom: 22px;
     margin-top: 0px;
@@ -40,24 +40,26 @@ label {
 }
 
 input[type="text"] {
-    padding: 0.5rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     border: 1px solid #444;
     border-radius: 4px;
     margin-top: 0.5rem;
+    margin-right: 2px;
     width: 50%;
     background-color: #333;
     color: #f2f2f2;
 }
 
 button {
-    padding: 0.5rem 1rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
     margin-top: 1rem;
+    margin-right: 1px;
     cursor: pointer;
 }
 
@@ -66,13 +68,12 @@ button:hover {
 }
 
 #model-select {
-    padding: 0.5rem;
-    font-size: 12px;
+    padding: 1rem;
+    font-size: 1rem;
     border: 1px solid #444;
     border-radius: 4px;
     margin-top: 14px;
     width: 480px;
-    float: right;
     background-color: #333;
     color: #f2f2f2;
 }
