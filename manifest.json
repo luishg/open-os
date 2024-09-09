@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "open-os LLM Browser Extension",
-  "version": "0.7",
+  "version": "0.8",
   "description": "Quick access to your favorite local LLM from your browser (Ollama).",
   "icons": {
     "128": "open-os-128.png"
