@@ -1,7 +1,7 @@
 // options.js
 var version = chrome.runtime.getManifest().version;
 document.getElementById('options-title').innerHTML = "<b>open-os</b> Extension Options"+" <small>v."+version+"</small>";
-chrome.storage.sync.get(['api_key', 'ai_engine', 'theme'], function(items) {
+chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_name', 'openos_header'], function(items) {
   if (items.api_key == undefined || items.api_key == '' || items.api_key == "undefined") {  
     document.getElementById('api-key-input').value = '';
   } else {
@@ -18,6 +18,23 @@ chrome.storage.sync.get(['api_key', 'ai_engine', 'theme'], function(items) {
     //document.getElementById('theme-select').value = items.theme;
   }
 
+  if (items.username == undefined || items.username == '' || items.username == "undefined") {
+    document.getElementById('username-input').value = 'Human';
+  } else {
+    document.getElementById('username-input').value = items.username;
+  }
+
+  if (items.openos_name == undefined || items.openos_name == '' || items.openos_name == "undefined") {
+    document.getElementById('openos-name-input').value = 'open-os';
+  } else {
+    document.getElementById('openos-name-input').value = items.openos_name;
+  }
+
+  if (items.openos_header == undefined || items.openos_header == '' || items.openos_header == "undefined") {
+    document.getElementById('openos-header-input').value = '<b>open-os</b> LLM Browser Extension';
+  } else {
+    document.getElementById('openos-header-input').value = items.openos_header;
+  }
 
 });
 
@@ -59,11 +76,19 @@ document.getElementById('options-form').addEventListener('submit', function(e) {
   var aiEngine = document.getElementById('ai-engine-select').value;
   var prePrompt = document.getElementById('pre-prompt').value;
   var charSelected = document.getElementById('char-select').value;
+  var username = document.getElementById('username-input').value;
+  var openosName = document.getElementById('openos-name-input').value;
+  var openosHeader = document.getElementById('openos-header-input').value;
 
-
-
-  chrome.storage.sync.set({'api_key': apiKey, 'ai_engine': aiEngine, 'pre_prompt': prePrompt, 'char_selected': charSelected}, function() {
-    alert('Options synced.');
-    
+  chrome.storage.sync.set({
+    'api_key': apiKey,
+    'ai_engine': aiEngine,
+    'pre_prompt': prePrompt,
+    'char_selected': charSelected,
+    'username': username,
+    'openos_name': openosName,
+    'openos_header': openosHeader
+  }, function() {
+    alert('Options synced. Reload your active tab to apply some changes.');
   });
 });

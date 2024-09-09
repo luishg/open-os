@@ -39,7 +39,12 @@ let API_KEY = '';
 let MODEL_ID = 'llama-3';
 let conversationHistory = '';
 var version = chrome.runtime.getManifest().version;
-var ollama_host = 'http://localhost:11434'
+var ollama_host = 'http://localhost:11434';
+var username = 'Human';
+var openos_name = 'open-os';
+var openos_header = 'LLM Browser Extension';
+
+
 
 var rebuildRules = undefined;
 
@@ -307,12 +312,12 @@ async function submitRequest() {
 
   //Add user input to chatlog
   const chatEntry = document.createElement('p');
-  chatEntry.innerHTML = "<b>Human:</b> " + input;
+  chatEntry.innerHTML = "<b>"+username+":</b> " + input;
   chatlog.appendChild(chatEntry);
 
   //Add LLM response to chatlog
   let chatResponse = document.createElement('p');
-  chatResponse.innerHTML += '<b>open-os:</b> ';
+  chatResponse.innerHTML += '<b>'+openos_name+':</b> ';
   chatlog.appendChild(chatResponse);
 
   chatResponse.classList.add('spinner');
@@ -381,6 +386,19 @@ function updateSettingString() {
 }
 
 
+// Load variables from options page
+chrome.storage.sync.get(['username', 'openos_name', 'openos_header'], function(items) {
+  if (items.username) {
+      username = items.username;
+  }
+  if (items.openos_name) {
+      openos_name = items.openos_name;
+  }
+  if (items.openos_header) {
+      openos_header = items.openos_header;
+      document.getElementById('openos-header').innerHTML = openos_header;
+  }
+});
 
 // Theme and font size updates from options page
 chrome.storage.sync.get(['theme', 'fontSize'], function(data) {
@@ -423,14 +441,14 @@ function initScript() {
   MODEL_ID = '';
   populateModels();
   chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected", "theme"], function(result){
-    conversationHistory = 'open-os: '+ result.pre_prompt;
+    conversationHistory = openos_name+': '+ result.pre_prompt;
     API_KEY = result.api_key;
     API_KEY = 'force';
     document.getElementById('chatlog').classList.add('spinner');
     applyTheme(result.theme)
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
-      chatEntry.textContent = 'open-os: API_KEY not set. Please go to the options page to set it.';
+      chatEntry.textContent = openos_name + ': API_KEY not set. Please go to the options page to set it.';
       chatlog.appendChild(chatEntry);
       updateSettingString();
     } else {
