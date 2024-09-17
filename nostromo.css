@@ -1,141 +1,67 @@
 @font-face {
-  font-family: MorePerfectDOSVGA;
-  src: url(MorePerfectDOSVGA.ttf);
+  font-family: "Berthold City Light Regular";
+  src: url("/lib/Berthold City Light Regular.otf") format("truetype");
 }
 
+/* Define a cursor flash effect */
+.cursor-flash {
+  animation: cursorFlash 0.5s ease-in-out;
+  text-decoration: underline;
+  color: rgb(253, 33, 33);
+  
+}
+
+@keyframes cursorFlash {
+  0% { 
+    color: rgb(195, 255, 176);
+    text-shadow: 0 0 10px rgba(195, 255, 176, 0.8), 0 0 20px rgba(195, 255, 176, 0.6), 0 0 30px rgba(195, 255, 176, 0.4); /* Strong glow effect */
+    text-decoration: underline;
+  } 
+  20% {
+    color: transparent;
+    background-color: rgb(195, 255, 176, 1); /* Flashing line effect */
+    text-decoration: underline;
+  }
+  100% { 
+    color: inherit;
+    text-shadow: none;
+    background-color: transparent; /* End color (normal color) */
+    text-decoration: none;
+  }
+}
+
+
+
 body {
-  font-size:20px;
+    font-size:20px;
     padding: 10px;
-    font-family:"MorePerfectDOSVGA";
+    font-family: "Berthold City Light Regular";
+    text-transform: uppercase;
     background-color: black;
-    background-image: radial-gradient(
-      rgba(32, 32, 32, 0.75), black 120%
-    );
     margin: 0px;
     min-height: 100vh;
     overflow: auto ;
-    text-shadow: 0 0 5px #C8C8C8;
-    animation: textShadow 4.6s infinite;
-    
-
-
-    filter: contrast(1.25) filter: grayscale(100%); contrast(.7);
-    color: #d5d5d5;
-
-    
+    text-shadow: 0 0 20px #C8C8C8;
+    color: #2ecf39;
+    filter: contrast(1.25) sepia(1) contrast(.7) hue-rotate(60deg) saturate(2) contrast(1.2);
 }
-
-
-
-@-webkit-keyframes scan{
-from { top: -50%;
-left: 0;
-}
-
-to {
-top: 150%;
-left: 0;
-}
-}
-
-
-@keyframes scan{
-from { top: -50%;
-left: 0;
-}
-
-to {
-top: 150%;
-left: 0;
-}
-}
-
-
-
-@keyframes textShadow {
-  0% {
-    text-shadow: 0.2px 0 1px rgba(187, 187, 187, 0.2), -0.2px 1px 1px rgba(112, 112, 112, 0.2), 0 0 1px;
-  }
-  5% {
-    text-shadow: 1.5px 0 1px rgba(230, 230, 230, 0.3), -1.5px 1px 1px rgba(61, 61, 61, 0.2), 0 0 1px;
-  }
-  10% {
-    text-shadow: 0.02px 0 1px rgba(224, 224, 224, 0.2), -0.02px 1px 1px rgba(43, 43, 43, 0.2), 0 0 1px;
-  }
-  15% {
-    text-shadow: 0.2px 0 1px rgba(116, 116, 116, 0.3), -0.2px 0 1px rgba(247, 247, 247, 0.2), 0 0 1px;
-  }
-  20% {
-    text-shadow: 1.5px 0 1px rgba(0,30,255,0.2), -1.5px 0 1px rgba(231, 231, 231, 0.2), 0 0 1px;
-  }
-  25% {
-    text-shadow: 0.8px 0 1px rgba(0,30,255,0.3), -0.8px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  30% {
-    text-shadow: 0.4px 0 1px rgba(0,30,255,0.2), -0.4px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  35% {
-    text-shadow: 1.5px 0 1px rgba(0,30,255,0.3), -1.5px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  40% {
-    text-shadow: 1.5px 0 1px rgba(0,30,255,0.2), -1.5px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  45% {
-    text-shadow: 1px 0 1px rgba(0,30,255,0.3), -1px -1px 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  50% {
-    text-shadow: 0.05px 0 1px rgba(0,30,255,0.2), -0.05px -1px 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  55% {
-    text-shadow: 1px 0 1px rgba(0,30,255,0.3), -1px -1px 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  60% {
-    text-shadow: 1px 0 1px rgba(0,30,255,0.2), -1px -1px 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  65% {
-    text-shadow: 1.5px 0 1px rgba(148, 148, 148, 0.3), -1.5px -1px 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  70% {
-    text-shadow: 0.2px 0 1px rgba(0,30,255,0.2), -0.2px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  75% {
-    text-shadow: 1px 0 1px rgba(0,30,255,0.3), -1px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  80% {
-    text-shadow: 0.05px 0 1px rgba(0,30,255,0.2), -0.05px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  85% {
-    text-shadow: 0.05px 0 1px rgba(0,30,255,0.3), -0.05px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  90% {
-    text-shadow: 1.5px 0 1px rgba(0,30,255,0.2), -1.5px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  95% {
-    text-shadow: 1px 0 1px rgba(0,30,255,0.3), -1px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-  100% {
-    text-shadow: 1px 0 1px rgba(105, 105, 105, 0.2), -1px 0 1px rgba(255,0,80,0.2), 0 0 1px;
-  }
-}
-
-
 
 h1 {
     text-align: center;
     font-size: 2rem;
-
+    text-decoration: underline;
     font-weight: 300;
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
 #chatlog {
-    border: 0px solid #1d331f;
-    border-radius: 4px;
+    
     padding: 1rem;
     margin: 1rem 0;
     overflow: auto;
-
+    
+    color: #2ecf39;
 }
 
 #chatlog:before {
@@ -162,9 +88,34 @@ h1 {
       animation:scan 6.5s 1.0s infinite ease-in-out  forwards;
 }
 
+
+@-webkit-keyframes scan{
+  from { top: -50%;
+  left: 0;
+  }
+  
+  to {
+  top: 150%;
+  left: 0;
+  }
+  }
+  
+  
+  @keyframes scan{
+  from { top: -50%;
+  left: 0;
+  }
+  
+  to {
+  top: 150%;
+  left: 0;
+  }
+  }
+
 #settings {
     text-align: center;
     font-size: 0.8rem;
+    color: #67ab6b;
     margin-bottom: 22px;
     margin-top: 0px;
 }
@@ -173,53 +124,59 @@ label {
     display: block;
     margin-top: 1rem;
     font-weight: bold;
+    color: #67ab6b;
 }
 
 input[type="text"] {
-    font-family:"MorePerfectDOSVGA";
     font-size: 1rem;
     padding: 1rem;
-    border: 0px solid #1d331f;;
+    border: 1px solid #000;
     border-radius: 4px;
     margin-top: 0.5rem;
     margin-right: 2px;
     width: 50%;
     background-color: #000;
-    color: #fff;
+    color: #2ecf39;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-family: "Berthold City Light Regular";
 }
 
 button {
-    font-family:"MorePerfectDOSVGA";
     font-size: 1rem;
     padding: 1rem;
     background-color: #000;
-    color: #ffffff;
     border: none;
     border-radius: 4px;
     margin-top: 1rem;
     margin-right: 1px;
     cursor: pointer;
+    text-decoration: underline;
+    color: #2ecf39;
+    text-transform: uppercase;
+    font-family: "Berthold City Light Regular";
 }
 
 button:hover {
-    background-color: #2e2e2e;
+    background-color: #002200;
 }
 
 #model-select {
-    font-family:"MorePerfectDOSVGA";
     font-size: 1rem;
     padding: 1rem;
-    border: none;
+    color: rgb(204, 240, 204);
     border-radius: 4px;
     margin-top: 14px;
     width: 480px;
     background-color: #000;
-    color: #ffffff;
+    color: #2ecf39;
+    font-family: "Berthold City Light Regular";
+    border: 1px solid #000;
+    text-transform: uppercase;
 }
 
-@keyframes spinner {
-    to {transform: rotate(360deg);}
-}
+
+
 
 .spinner:before {
 
@@ -255,3 +212,46 @@ button:hover {
     0%,49.9% {background-position:0 50%,bottom 20px left 16px,20px 0,50% 0,40px 100%,bottom 0 right 16px,60px 50% }
     50%,100% {background-position:right 60px top 50%,16px 0,right 40px top 0,50% 100%,right 20px bottom 0,right 16px top 20px,100% 50%}
   }
+
+
+
+
+@keyframes chatlogFlash {
+  0% {
+    background-color: #2ecf39; /* End color (normal color) */
+
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 0.3;
+    transform: scale(0.98);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 0.1;
+    transform: scale(0.94);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 0;
+    background-color: transparent; /* End color (normal color) */
+    transform: scale(1);
+
+  }
+}
+
+.flash {
+  animation: chatlogFlash 0.1s ease-in-out;
+  
+}
+
+
+
+
+

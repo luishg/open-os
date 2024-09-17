@@ -169,7 +169,8 @@
       <select id="theme-select" name="theme">
         <option value="light" selected>Light Theme</option>
         <option value="dark">Dark Theme</option>
-        <option value="retro">Retro Terminal</option>
+        <option value="retro">MS-DOS 6.22 Terminal</option>
+        <option value="nostromo">NOSTROMO COMPUTER MU-TH-UR 6000 (Alien)</option>
       </select>
 
       <label for="font-size-select">Font Size:</label>
@@ -181,6 +182,7 @@
         <option value="18">18px</option>
         <option value="20">20px</option>
         <option value="24">24px</option>
+        <option value="24">26px</option>
       </select>
 
       <label for="username-input">User name:</label>
@@ -193,22 +195,23 @@
       <input type="text" id="openos-header-input" name="openos_header" placeholder="Your OpenOS header here">
 
 
-      <label for="api-key-input">OpenAI API_KEY (deprecated):</label>
-      <input type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
+      <label display="none" for="api-key-input">OpenAI API_KEY (deprecated):</label>
+      <input display="none" type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
       
-      <label for="ai-engine-select">LLM Model:</label>
-      <select id="ai-engine-select" name="ai_engine">
+      <label style="display:none" for="ai-engine-select">LLM Model:</label>
+      <select style="display:none" id="ai-engine-select" name="ai_engine">
         <option value="engine1" selected disabled>Deactivated, set up your model on the main page.</option>
       </select>
 
-      <label for="char-select">Character (deprecated):</label>
-      <select id="char-select" disabled name="char-select">
-        <option value="helpbot" selected>Help Bot</option>
-        <option value="datemode">Date Mode</option>
+      <label for="char-select">Scenarios and pre-prompts:</label>
+      <select  id="char-select" name="char-select">
+        <option value="custom" selected>Custom (write your optional default promt)</option>
+        <option value="alien">Alien Rolplay</option>
+        <option value="translator">Translator assistant</option>
       </select>
-      <label for="ai-engine-select">Pre-prompt (you can customize this previous prompt):</label>
+      <label for="ai-engine-select">Optional pre-prompt (this is the default first instruction that will be sent when opening the extension.):</label>
 
-      <textarea id="pre-prompt" disabled>Im am open-os, a help bot to solve any questiom you may have in any langguage I know.</textarea>
+      <textarea id="pre-prompt-input"></textarea>
       
       <button type="submit">Save</button>
     </form>

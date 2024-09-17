@@ -43,7 +43,7 @@ var ollama_host = 'http://localhost:11434';
 var username = 'Human';
 var openos_name = 'open-os';
 var openos_header = 'LLM Browser Extension';
-
+var pre_prompt_buffer = '';
 
 
 var rebuildRules = undefined;
@@ -203,6 +203,11 @@ async function populateModels() {
       document.getElementById('chatlog').innerHTML +=  ' <b>'+MODEL_ID + '</b> loaded.';
       document.getElementById('chatlog').classList.remove('spinner');
       updateSettingString();
+
+      //pre-promt 
+      if (pre_prompt_buffer != '') {
+        submitRequest();
+      }
     
     });
 
@@ -299,21 +304,58 @@ async function submitPrompt () {
 }
 
 
+//create a afunction printresponse to write into chatResponse (Adding the new text, not removing previous content) div the string letter by leeter and adding a flashing cursor for each one
+function printResponse(text) {
+  
+
+// Remove class attribute from all span tags and remove the span tags themselves
+const spans = chatlog.querySelectorAll('span');
+spans.forEach(span => {
+    const parent = span.parentNode;
+    while (span.firstChild) {
+        parent.insertBefore(span.firstChild, span);
+    }
+    parent.removeChild(span);
+});
+      // Append each character of the string
+    
+    for (let index = 0; index < text.length; index++) {
+      chatlog.innerHTML += '<span class="cursor-flash">'+text[index]+'</span>';
+      
+    }
+    
+
+
+  }
+
+
+
+
+
 
 // Function to handle the user input and call the API functions
 async function submitRequest() {
 
-  
-  const input = promptInput.value;
+  const chatlog = document.getElementById('chatlog');
+
+  let input = '';
+  if (pre_prompt_buffer != '') {
+    input = pre_prompt_buffer; 
+    pre_prompt_buffer = '';
+  }else{
+    input = promptInput.value;
+    //Add user input to chatlog
+    const chatEntry = document.createElement('p');
+    chatEntry.innerHTML = "<b>"+username+":</b> " + input;
+    chatlog.appendChild(chatEntry);
+  }
+
   promptInput.value = '';
   const selectedModel = document.getElementById('model-select').value;
   const context = document.getElementById('chatlog').context;
-  const chatlog = document.getElementById('chatlog');
+  
 
-  //Add user input to chatlog
-  const chatEntry = document.createElement('p');
-  chatEntry.innerHTML = "<b>"+username+":</b> " + input;
-  chatlog.appendChild(chatEntry);
+  
 
   //Add LLM response to chatlog
   let chatResponse = document.createElement('p');
@@ -326,7 +368,7 @@ async function submitRequest() {
 
   postRequest(data)
   .then(async response => {
-    await getResponse(response, parsedResponse => {
+    await getResponse(response, async parsedResponse => {
       let word = parsedResponse.response;
 
       if (parsedResponse.done) {
@@ -339,7 +381,23 @@ async function submitRequest() {
 
       // add word to response
       if (word != undefined) {
-        chatResponse.innerHTML += word;
+
+       // Remove class attribute from all span tags and remove the span tags themselves
+        const spans = chatlog.querySelectorAll('span');
+        spans.forEach(span => {
+            const parent = span.parentNode;
+            while (span.firstChild) {
+                parent.insertBefore(span.firstChild, span);
+            }
+            parent.removeChild(span);
+        });
+              // Append each character of the string
+            
+        //for (let index = 0; index < word.length; index++) {
+        //      chatResponse.innerHTML += '<span class="cursor-flash">'+word[index]+'</span>';
+        //}
+
+        chatResponse.innerHTML += '<span class="cursor-flash">'+word+'</span>';
       }
     });
   })
@@ -421,6 +479,15 @@ function applyTheme(theme) {
     themeStyle.href = 'retro.css';
   } else if (theme == 'dark') {
     themeStyle.href = 'dark.css';
+  } else if (theme == 'nostromo') {
+    themeStyle.href = 'nostromo.css';
+    //load custom JS for nostromo theme nostromo.js
+    if (!document.querySelector('script[src="nostromo.js"]')) {
+      var nostromoScript = document.createElement('script');
+      nostromoScript.src = 'nostromo.js';
+      document.head.appendChild(nostromoScript);
+  }
+
   } else {
     themeStyle.href = 'light.css';
   }
@@ -454,6 +521,14 @@ function initScript() {
     } else {
       updateSettingString();
     }
+
+    if (result.pre_prompt == undefined || result.pre_prompt == '' || result.pre_prompt == "undefined") {
+      pre_prompt_buffer = '';
+    } else {
+      pre_prompt_buffer = result.pre_prompt;
+      
+    }
+    
    
   });
   
