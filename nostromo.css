@@ -39,7 +39,6 @@ body {
     text-transform: uppercase;
     background-color: black;
     margin: 0px;
-    min-height: 100vh;
     overflow: auto ;
     text-shadow: 0 0 20px #C8C8C8;
     color: #2ecf39;

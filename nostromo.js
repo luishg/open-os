@@ -1,15 +1,15 @@
 // Create new Audio objects
 const alienKeysSound = new Audio('/lib/sounds/alien_keys.mp3');
-alienKeysSound.volume = 0.1; // Set volume to half
-
+alienKeysSound.volume = 0.1; 
 const beepSound = new Audio('/lib/sounds/beep.wav');
-beepSound.volume = 0.1; // Set volume to half
-
+beepSound.volume = 0.1; 
 const bootSound = new Audio('/lib/sounds/boot.mp3');
-bootSound.volume = 0.1; // Set volume to half
-
+bootSound.volume = 0.1; 
 const loginSound = new Audio('/lib/sounds/login_alien.mp3');
-loginSound.volume = 0.1; // Set volume to half
+loginSound.volume = 0.1; 
+
+const atmSound = new Audio('/lib/sounds/alien_atm.mp3');
+atmSound.volume = 0.1; 
 
 // Function to play the beep sound
 function playBeepSound() {
@@ -38,9 +38,8 @@ function pauseAlienKeysSound() {
 // Function to play the boot sound
 function playBootSound() {
     bootSound.play();
-    
-  
     loginSound.play();
+    atmSound.play();
 }
 
 // Function to pause the boot sound
