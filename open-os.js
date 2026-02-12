@@ -38,6 +38,7 @@ Some browsers like Edge do not allow communication with Ollama from the side pan
 let API_KEY = '';
 let MODEL_ID = 'llama-3';
 let conversationHistory = '';
+let chatMessages = [];
 var version = chrome.runtime.getManifest().version;
 var ollama_host = 'http://localhost:11434';
 var username = 'Human';
@@ -87,7 +88,7 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 
 // API Function to send a POST request to the Ollama
 async function postRequest(data) {
-  const URL = `${ollama_host}/api/generate`;
+  const URL = `${ollama_host}/api/chat`;
 
   try {
       const response = await fetch(URL, {
@@ -357,10 +358,9 @@ async function submitRequest() {
 
   promptInput.value = '';
   const selectedModel = document.getElementById('model-select').value;
-  const context = document.getElementById('chatlog').context;
-  
 
-  
+  // Add user message to conversation history
+  chatMessages.push({ role: 'user', content: input });
 
   //Add LLM response to chatlog (div, not p — marked.parse() produces block elements like <p>, <pre>, <ul>)
   let chatResponse = document.createElement('div');
@@ -370,23 +370,18 @@ async function submitRequest() {
 
   chatResponse.classList.add('spinner');
 
-  const data = { model: selectedModel, prompt: input, context: context};
+  const data = { model: selectedModel, messages: chatMessages };
+
+  let fullResponseText = '';
 
   postRequest(data)
   .then(async response => {
     await getResponse(response, async parsedResponse => {
-      let word = parsedResponse.response;
-
-      if (parsedResponse.done) {
-        chatlog.context = parsedResponse.context;
-        chatResponse.classList.remove('spinner');
-        chatResponse.innerHTML = marked.parse(chatResponse.innerHTML);
-        window.scrollTo(0, document.body.scrollHeight);
-
-      }
+      let word = parsedResponse.message ? parsedResponse.message.content : '';
 
       // add word to response
-      if (word != undefined) {
+      if (word != undefined && word !== '') {
+        fullResponseText += word;
 
        // Remove class attribute from all span tags and remove the span tags themselves
         const spans = chatlog.querySelectorAll('span');
@@ -397,20 +392,28 @@ async function submitRequest() {
             }
             parent.removeChild(span);
         });
-              // Append each character of the string
-            
-        //for (let index = 0; index < word.length; index++) {
-        //      chatResponse.innerHTML += '<span class="cursor-flash">'+word[index]+'</span>';
-        //}
 
         chatResponse.innerHTML += '<span class="cursor-flash">'+word+'</span>';
+      }
+
+      if (parsedResponse.done) {
+        // Add assistant response to conversation history
+        chatMessages.push({ role: 'assistant', content: fullResponseText });
+        chatResponse.classList.remove('spinner');
+        chatResponse.innerHTML = marked.parse(chatResponse.innerHTML);
+        window.scrollTo(0, document.body.scrollHeight);
       }
     });
   })
     .then(() => {
-      
+
     })
     .catch(error => {
+
+        // Remove failed user message from history to keep state clean
+        if (chatMessages.length > 0 && chatMessages[chatMessages.length - 1].role === 'user') {
+          chatMessages.pop();
+        }
 
         const errorEntry = document.createElement('div');
         errorEntry.classList.add('chat-system');
@@ -545,6 +548,10 @@ function initScript() {
       chrome.storage.local.get('injected_identity', function(localResult) {
         if (localResult.injected_identity) {
           pre_prompt_buffer = 'Adopt the following identity for this session. Stay in character at all times. Respond as this character would in every interaction:\n\n' + localResult.injected_identity;
+          // If model already loaded (populateModels passed the check before us), trigger auto-submit now
+          if (MODEL_ID !== '') {
+            submitRequest();
+          }
         } else {
           pre_prompt_buffer = '';
         }
