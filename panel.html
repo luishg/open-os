@@ -2,15 +2,15 @@
 <html>
   <head>
     <title>open-os local LLM</title>
-    <link rel="stylesheet" id="theme" href="light.css">
+    <link rel="stylesheet" id="theme" href="themes/dark-modern/dark-modern.css">
     <script src="lib/marked.min.js"
     crossorigin="anonymous"></script>
   </head>
   <body>
     <h1 id="openos-header"><b>open-os</b> LLM Browser Extension</h1>
     <p id="settings">NOT INITIALIZED</p>
-    <div id="chatlog">Connecting...</div>
-    <div>
+    <div id="chatlog"><div class="chat-system" id="system-status">Connecting...</div></div>
+    <div id="input-area">
       <input type="text" id="prompt" class="caret" placeholder="Type here and hit [enter]">
       <button id="submit">send</button>
       <button id="options">options</button>

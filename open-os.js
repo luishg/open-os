@@ -100,12 +100,18 @@ async function postRequest(data) {
 
       if (!response.ok) {
           const errorData = await response.json(); // Or response.text() if not JSON
-          document.getElementById('chatlog').innerHTML += `API returned an error: ${errorData.message}`;
+          const apiError = document.createElement('div');
+          apiError.classList.add('chat-system');
+          apiError.textContent = 'API returned an error: ' + errorData.message;
+          document.getElementById('chatlog').appendChild(apiError);
       }
 
       return response; // Assuming the API returns JSON
   } catch (error) {
-    document.getElementById('chatlog').innerHTML += 'Failed to post request '+ollama_host+' ';
+    const fetchError = document.createElement('div');
+    fetchError.classList.add('chat-system');
+    fetchError.textContent = 'Failed to post request ' + ollama_host + ' ';
+    document.getElementById('chatlog').appendChild(fetchError);
       throw error; // Rethrow or handle as needed
   }
 }
@@ -200,7 +206,7 @@ async function populateModels() {
         selectElement.value = selectElement.options[0].value;; // otherwise set to the first element if exists
         MODEL_ID = selectElement.options[0].value;
       }
-      document.getElementById('chatlog').innerHTML +=  ' <b>'+MODEL_ID + '</b> loaded.';
+      document.getElementById('system-status').innerHTML +=  ' <b>'+MODEL_ID + '</b> loaded.';
       document.getElementById('chatlog').classList.remove('spinner');
       updateSettingString();
 
@@ -214,10 +220,8 @@ async function populateModels() {
 
   }
   catch (error) {
-    document.getElementById('chatlog').innerHTML += '<br></br> Unable to communitcate with Ollama: ' + error.message;
-
-
-    document.getElementById('chatlog').innerHTML += notFoundString;
+    document.getElementById('system-status').innerHTML += '<br> Unable to communicate with Ollama: ' + error.message;
+    document.getElementById('system-status').innerHTML += notFoundString;
   }
 }
 
@@ -346,6 +350,7 @@ async function submitRequest() {
     input = promptInput.value;
     //Add user input to chatlog
     const chatEntry = document.createElement('p');
+    chatEntry.classList.add('chat-user');
     chatEntry.innerHTML = "<b>"+username+":</b> " + input;
     chatlog.appendChild(chatEntry);
   }
@@ -357,8 +362,9 @@ async function submitRequest() {
 
   
 
-  //Add LLM response to chatlog
-  let chatResponse = document.createElement('p');
+  //Add LLM response to chatlog (div, not p — marked.parse() produces block elements like <p>, <pre>, <ul>)
+  let chatResponse = document.createElement('div');
+  chatResponse.classList.add('chat-response');
   chatResponse.innerHTML += '<b>'+openos_name+':</b> ';
   chatlog.appendChild(chatResponse);
 
@@ -406,9 +412,10 @@ async function submitRequest() {
     })
     .catch(error => {
 
-        document.getElementById('chatlog').innerHTML += error.message;
-        document.getElementById('chatlog').innerHTML += notResponseString;
-
+        const errorEntry = document.createElement('div');
+        errorEntry.classList.add('chat-system');
+        errorEntry.innerHTML = error.message + notResponseString;
+        document.getElementById('chatlog').appendChild(errorEntry);
 
     });
 
@@ -475,21 +482,27 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 function applyTheme(theme) {
   var themeStyle = document.getElementById('theme');
-  if (theme == 'retro') {
-    themeStyle.href = 'retro.css';
+  if (theme == 'light') {
+    themeStyle.href = 'themes/light/light.css';
+  } else if (theme == 'retro') {
+    themeStyle.href = 'themes/retro/retro.css';
   } else if (theme == 'dark') {
-    themeStyle.href = 'dark.css';
+    themeStyle.href = 'themes/dark/dark.css';
+  } else if (theme == 'dark-modern') {
+    themeStyle.href = 'themes/dark-modern/dark-modern.css';
+  } else if (theme == 'light-modern') {
+    themeStyle.href = 'themes/light-modern/light-modern.css';
   } else if (theme == 'nostromo') {
-    themeStyle.href = 'nostromo.css';
+    themeStyle.href = 'themes/nostromo/nostromo.css';
     //load custom JS for nostromo theme nostromo.js
-    if (!document.querySelector('script[src="nostromo.js"]')) {
+    if (!document.querySelector('script[src="themes/nostromo/nostromo.js"]')) {
       var nostromoScript = document.createElement('script');
-      nostromoScript.src = 'nostromo.js';
+      nostromoScript.src = 'themes/nostromo/nostromo.js';
       document.head.appendChild(nostromoScript);
   }
 
   } else {
-    themeStyle.href = 'light.css';
+    themeStyle.href = 'themes/dark-modern/dark-modern.css';
   }
 }
 
@@ -515,6 +528,7 @@ function initScript() {
     applyTheme(result.theme)
     if (API_KEY == undefined || API_KEY == '' || API_KEY == "undefined") {
       const chatEntry = document.createElement('p');
+      chatEntry.classList.add('chat-system');
       chatEntry.textContent = openos_name + ': API_KEY not set. Please go to the options page to set it.';
       chatlog.appendChild(chatEntry);
       updateSettingString();

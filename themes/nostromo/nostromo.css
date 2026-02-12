@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Berthold City Light Regular";
-  src: url("/lib/Berthold City Light Regular.otf") format("truetype");
+  src: url("Berthold City Light Regular.otf") format("truetype");
 }
 
 /* Define a cursor flash effect */

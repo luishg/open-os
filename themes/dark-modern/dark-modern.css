@@ -1,0 +1,538 @@
+/* ==========================================================================
+   open-os — Dark Modern Theme
+   Premium dark UI with gradients, glassmorphism, and subtle glow effects.
+   Inspired by modern AI/protocol interfaces (soul-protocol style).
+   ========================================================================== */
+
+/* ---------- Custom Properties ---------- */
+:root {
+    --dm-bg-primary: #08080d;
+    --dm-bg-secondary: #0e0e16;
+    --dm-bg-surface: rgba(16, 16, 28, 0.7);
+    --dm-bg-surface-solid: #10101c;
+    --dm-bg-input: rgba(12, 12, 22, 0.8);
+    --dm-border: rgba(255, 255, 255, 0.06);
+    --dm-border-focus: rgba(120, 119, 255, 0.4);
+    --dm-text-primary: #e4e4ed;
+    --dm-text-secondary: rgba(180, 180, 210, 0.7);
+    --dm-text-muted: rgba(140, 140, 175, 0.5);
+    --dm-accent-start: #6e6ef7;
+    --dm-accent-end: #b44bf6;
+    --dm-accent-glow: rgba(120, 100, 255, 0.15);
+    --dm-radius: 6px;
+    --dm-radius-sm: 4px;
+    --dm-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Base ---------- */
+body {
+    margin: 0;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--dm-bg-primary);
+    background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(100, 80, 240, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 100%, rgba(160, 60, 220, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: var(--dm-text-primary);
+    min-height: 100vh;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* ---------- Header ---------- */
+h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 12px 0 4px;
+    color: var(--dm-text-primary);
+    background: linear-gradient(135deg, var(--dm-text-primary) 0%, rgba(160, 150, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h1 b {
+    font-weight: 700;
+}
+
+/* ---------- Settings Bar ---------- */
+#settings {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--dm-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    padding: 6px 0;
+}
+
+/* ---------- Chat Log ---------- */
+#chatlog {
+    background: var(--dm-bg-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius);
+    padding: 16px;
+    margin: 0 0 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: var(--dm-text-primary);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    /* Subtle inner shadow for depth */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Chat Messages ---------- */
+
+/* Base <p> inside chatlog — covers user messages, system text, and markdown <p> inside responses */
+#chatlog p {
+    margin: 0 0 8px;
+    padding: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+#chatlog > :last-child {
+    margin-bottom: 0;
+}
+
+/* Bold labels (user name / bot name) */
+#chatlog b {
+    color: var(--dm-accent-start);
+    font-weight: 600;
+}
+
+/* --- User messages: top-level, clean --- */
+#chatlog .chat-user {
+    padding: 10px 14px;
+    margin: 0 0 4px;
+    background: transparent;
+}
+
+#chatlog .chat-user b {
+    color: var(--dm-text-primary);
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* --- AI responses: nested panel (div container) --- */
+#chatlog .chat-response {
+    margin: 0 0 12px 12px;
+    padding: 14px 16px;
+    background: rgba(110, 110, 247, 0.04);
+    border: 1px solid rgba(110, 110, 247, 0.08);
+    border-radius: var(--dm-radius);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.02),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background var(--dm-transition), border-color var(--dm-transition);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+#chatlog .chat-response:hover {
+    background: rgba(110, 110, 247, 0.06);
+    border-color: rgba(110, 110, 247, 0.12);
+}
+
+#chatlog .chat-response b {
+    color: var(--dm-accent-start);
+    font-weight: 600;
+}
+
+/* Markdown <p> inside a response — tighter spacing, no double padding */
+#chatlog .chat-response p {
+    margin: 0 0 6px;
+    padding: 0;
+}
+
+#chatlog .chat-response p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- System messages: status, errors, connection info --- */
+#chatlog .chat-system {
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: var(--dm-text-muted);
+    border-left: 2px solid rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    line-height: 1.5;
+}
+
+#chatlog .chat-system b {
+    color: var(--dm-text-secondary);
+    font-weight: 600;
+}
+
+#chatlog .chat-system a {
+    color: var(--dm-accent-start);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(110, 110, 247, 0.3);
+}
+
+#chatlog .chat-system strong {
+    color: var(--dm-text-secondary);
+}
+
+/* Markdown rendered content inside chatlog */
+#chatlog pre {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius-sm);
+    padding: 12px;
+    overflow-x: auto;
+    font-size: 0.85em;
+}
+
+#chatlog code {
+    background: rgba(120, 100, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #c4b5fd;
+}
+
+#chatlog pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: var(--dm-text-primary);
+}
+
+#chatlog a {
+    color: var(--dm-accent-start);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(110, 110, 247, 0.3);
+    transition: color var(--dm-transition), border-color var(--dm-transition);
+}
+
+#chatlog a:hover {
+    color: var(--dm-accent-end);
+    border-bottom-color: var(--dm-accent-end);
+}
+
+#chatlog strong {
+    color: var(--dm-text-primary);
+    font-weight: 600;
+}
+
+#chatlog ul, #chatlog ol {
+    padding-left: 20px;
+    margin: 8px 0;
+}
+
+#chatlog li {
+    margin-bottom: 4px;
+    color: var(--dm-text-secondary);
+}
+
+/* Custom scrollbar */
+#chatlog::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chatlog::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chatlog::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
+#chatlog::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ---------- Input Area — Flex Layout ---------- */
+#input-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+input[type="text"] {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 12px 14px;
+    font-size: 1em;
+    font-family: inherit;
+    background: var(--dm-bg-input);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius-sm);
+    color: var(--dm-text-primary);
+    outline: none;
+    transition: border-color var(--dm-transition), box-shadow var(--dm-transition);
+}
+
+input[type="text"]::placeholder {
+    color: var(--dm-text-muted);
+}
+
+input[type="text"]:focus {
+    border-color: var(--dm-border-focus);
+    box-shadow: 0 0 0 3px var(--dm-accent-glow), 0 0 20px rgba(110, 110, 247, 0.08);
+}
+
+/* ---------- Buttons ---------- */
+button {
+    flex: 0 0 auto;
+    padding: 12px 20px;
+    font-size: 1em;
+    font-family: inherit;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--dm-radius-sm);
+    cursor: pointer;
+    transition: all var(--dm-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Send button — gradient accent */
+#submit {
+    background: linear-gradient(135deg, var(--dm-accent-start) 0%, var(--dm-accent-end) 100%);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 12px rgba(110, 110, 247, 0.25);
+}
+
+#submit:hover {
+    box-shadow: 0 4px 20px rgba(110, 110, 247, 0.4);
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+#submit:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 8px rgba(110, 110, 247, 0.2);
+}
+
+/* Options button — ghost style */
+#options {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--dm-text-secondary);
+    border: 1px solid var(--dm-border);
+}
+
+#options:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--dm-text-primary);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- Model Select ---------- */
+#model-select {
+    flex: 1 1 100%;
+    padding: 12px 14px;
+    font-size: 0.9em;
+    font-family: inherit;
+    background: var(--dm-bg-input);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius-sm);
+    color: var(--dm-text-secondary);
+    outline: none;
+    transition: border-color var(--dm-transition), box-shadow var(--dm-transition);
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237777aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+#model-select:focus {
+    border-color: var(--dm-border-focus);
+    box-shadow: 0 0 0 3px var(--dm-accent-glow);
+}
+
+#model-select option {
+    background: var(--dm-bg-surface-solid);
+    color: var(--dm-text-primary);
+}
+
+/* ---------- Labels ---------- */
+label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--dm-text-secondary);
+    letter-spacing: 0.02em;
+}
+
+/* ---------- Typing Cursor Animation ---------- */
+.cursor-flash {
+    animation: dm-cursor-flash 0.4s ease-out;
+}
+
+@keyframes dm-cursor-flash {
+    0% {
+        color: var(--dm-accent-start);
+        text-shadow: 0 0 8px rgba(110, 110, 247, 0.6);
+    }
+    100% {
+        color: inherit;
+        text-shadow: none;
+    }
+}
+
+/* ---------- Loading Spinner ---------- */
+.spinner:before {
+    content: '';
+    float: right;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-top-color: var(--dm-accent-start);
+    animation: dm-spin 0.8s linear infinite;
+}
+
+@keyframes dm-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- Ambient Glow — Decorative Background Orb ---------- */
+body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: -20%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(100, 80, 255, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: dm-orb-drift 20s ease-in-out infinite alternate;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    right: -20%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(180, 75, 246, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: dm-orb-drift 25s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes dm-orb-drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(5%, 8%) scale(1.05); }
+    100% { transform: translate(-3%, -5%) scale(0.95); }
+}
+
+/* ---------- Responsive — Side Panel + Narrow Widths ---------- */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+        margin: 8px 0 2px;
+    }
+
+    #settings {
+        font-size: 0.6rem;
+        margin-bottom: 10px;
+    }
+
+    #chatlog {
+        padding: 12px;
+        border-radius: var(--dm-radius-sm);
+    }
+
+    #chatlog .chat-user {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+
+    #chatlog .chat-response {
+        padding: 10px 12px;
+        margin-left: 8px;
+        font-size: 0.9em;
+    }
+
+    #input-area {
+        gap: 4px;
+    }
+
+    button {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 340px) {
+    h1 {
+        font-size: 1rem;
+    }
+
+    #chatlog .chat-user {
+        padding: 6px 8px;
+    }
+
+    #chatlog .chat-response {
+        padding: 8px 10px;
+        margin-left: 6px;
+    }
+
+    button {
+        padding: 8px 10px;
+        font-size: 0.78rem;
+    }
+
+    input[type="text"] {
+        padding: 8px 10px;
+    }
+}
+
+/* ---------- Fade-in on Load ---------- */
+@keyframes dm-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    animation: dm-fade-in 0.6s ease-out both;
+}
+
+#settings {
+    animation: dm-fade-in 0.6s 0.1s ease-out both;
+}
+
+#chatlog {
+    animation: dm-fade-in 0.6s 0.2s ease-out both;
+}

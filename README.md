@@ -19,7 +19,7 @@ Chat with AI directly from your browser — no external servers, no accounts, no
 - **Streaming responses** — Token-based streaming text rendering
 - **Markdown support** — Responses are rendered with full markdown formatting
 - **Simple and lightweight** — Minimal design, no bloat
-- **Multiple themes** — Light, Dark, MS-DOS 6.22 Terminal, and NOSTROMO MU-TH-UR 6000 (Alien)
+- **Multiple themes** — Dark Modern, Light Modern, Light Classic, Dark Classic, MS-DOS 6.22 Terminal, and NOSTROMO MU-TH-UR 6000 (Alien)
 - **Customizable** — Configure font size, user name, LLM name, and header text
 - **Pre-prompt scenarios** — Set default instructions to shape your assistant's behavior (custom, Alien roleplay, translator, and more)
 - **Settings sync** — Options are synchronized across all your browsers via Chrome storage

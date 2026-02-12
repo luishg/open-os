@@ -1,14 +1,14 @@
 // Create new Audio objects
-const alienKeysSound = new Audio('/lib/sounds/alien_keys.mp3');
+const alienKeysSound = new Audio('/themes/nostromo/sounds/alien_keys.mp3');
 alienKeysSound.volume = 0.1; 
-const beepSound = new Audio('/lib/sounds/beep.wav');
+const beepSound = new Audio('/themes/nostromo/sounds/beep.wav');
 beepSound.volume = 0.1; 
-const bootSound = new Audio('/lib/sounds/boot.mp3');
+const bootSound = new Audio('/themes/nostromo/sounds/boot.mp3');
 bootSound.volume = 0.1; 
-const loginSound = new Audio('/lib/sounds/login_alien.mp3');
+const loginSound = new Audio('/themes/nostromo/sounds/login_alien.mp3');
 loginSound.volume = 0.1; 
 
-const atmSound = new Audio('/lib/sounds/alien_atm.mp3');
+const atmSound = new Audio('/themes/nostromo/sounds/alien_atm.mp3');
 atmSound.volume = 0.1; 
 
 // Function to play the beep sound

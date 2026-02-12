@@ -12,10 +12,8 @@ chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_na
   } else {
     document.getElementById('ai-engine-select').value = items.ai_engine;
   }
-  if (items.theme == 'retro') {
+  if (items.theme) {
     document.getElementById('theme-select').value = items.theme;
-  } else {
-    //document.getElementById('theme-select').value = items.theme;
   }
 
   if (items.username == undefined || items.username == '' || items.username == "undefined") {

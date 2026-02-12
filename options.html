@@ -2,121 +2,299 @@
 <html>
   <head>
     <title>open-os Options</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7CBitter%3A400%2C700&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --dm-bg-primary: #08080d;
+        --dm-bg-secondary: #0e0e16;
+        --dm-bg-surface: rgba(16, 16, 28, 0.7);
+        --dm-bg-surface-solid: #10101c;
+        --dm-bg-input: rgba(12, 12, 22, 0.8);
+        --dm-border: rgba(255, 255, 255, 0.06);
+        --dm-border-focus: rgba(120, 119, 255, 0.4);
+        --dm-text-primary: #e4e4ed;
+        --dm-text-secondary: rgba(180, 180, 210, 0.7);
+        --dm-text-muted: rgba(140, 140, 175, 0.5);
+        --dm-accent-start: #6e6ef7;
+        --dm-accent-end: #b44bf6;
+        --dm-accent-glow: rgba(120, 100, 255, 0.15);
+        --dm-radius: 6px;
+        --dm-radius-sm: 4px;
+        --dm-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
       body {
-
-        font-family: Montserrat, Helvetica, sans-serif;
-        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--dm-bg-primary);
         background-image: url('back-open-os.jpg');
         background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: var(--dm-text-primary);
+        min-height: 100vh;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
+
+      *, *::before, *::after {
+        box-sizing: inherit;
+      }
+
       h1 {
         text-align: center;
-        font-size: 30px;
-        font-weight: 300;
-        color: #545454;
-        margin-bottom: 30px;
-        margin-top: 10px;
-
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 12px 0 20px;
+        background: linear-gradient(135deg, var(--dm-text-primary) 0%, rgba(160, 150, 255, 0.8) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
+
+      h1 b {
+        font-weight: 700;
+      }
+
+      h1 small {
+        font-size: 0.6rem;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        -webkit-text-fill-color: var(--dm-text-muted);
+      }
+
       label {
         display: block;
-        margin-top: 10px;
+        margin-top: 14px;
+        margin-bottom: 4px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--dm-text-secondary);
+        letter-spacing: 0.02em;
       }
 
       textarea {
         display: block;
-        margin-top: 10px;
+        margin-top: 6px;
         width: 100%;
-        min-height: 60px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        min-height: 80px;
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        background: var(--dm-bg-input);
+        border: 1px solid var(--dm-border);
+        border-radius: var(--dm-radius-sm);
+        color: var(--dm-text-primary);
         box-sizing: border-box;
+        outline: none;
+        resize: vertical;
+        transition: border-color var(--dm-transition), box-shadow var(--dm-transition);
+      }
 
+      textarea:focus {
+        border-color: var(--dm-border-focus);
+        box-shadow: 0 0 0 3px var(--dm-accent-glow);
       }
 
       input[type="text"], select {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        padding: 10px 14px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        background: var(--dm-bg-input);
+        border: 1px solid var(--dm-border);
+        border-radius: var(--dm-radius-sm);
+        color: var(--dm-text-primary);
         box-sizing: border-box;
-        margin-top: 6px;
-        margin-bottom: 16px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        outline: none;
+        transition: border-color var(--dm-transition), box-shadow var(--dm-transition);
       }
-      button[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 4px;
+
+      input[type="text"]:focus, select:focus, textarea:focus {
+        border-color: var(--dm-border-focus);
+        box-shadow: 0 0 0 3px var(--dm-accent-glow);
+      }
+
+      input[type="text"]::placeholder {
+        color: var(--dm-text-muted);
+      }
+
+      input[type="text"]:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
         cursor: pointer;
-        margin-top: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237777aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
       }
+
+      select option {
+        background: var(--dm-bg-surface-solid);
+        color: var(--dm-text-primary);
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(135deg, var(--dm-accent-start) 0%, var(--dm-accent-end) 100%);
+        color: #fff;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        padding: 12px 28px;
+        border: none;
+        border-radius: var(--dm-radius-sm);
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 2px 12px rgba(110, 110, 247, 0.25);
+        transition: all var(--dm-transition);
+      }
+
       button[type="submit"]:hover {
-        background-color: #45a049;
+        box-shadow: 0 4px 20px rgba(110, 110, 247, 0.4);
+        transform: translateY(-1px);
+        filter: brightness(1.1);
+      }
+
+      button[type="submit"]:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 8px rgba(110, 110, 247, 0.2);
       }
 
       #options-frame {
-        width: 600px;
-        border: 2px solid #d6d6d6;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        max-width: 780px;
+        width: 100%;
+        border: 1px solid var(--dm-border);
+        padding: 28px 32px;
+        border-radius: var(--dm-radius);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.03),
+          0 4px 24px rgba(0, 0, 0, 0.3);
         margin: 30px auto;
-        background-color: #f2f2f2;
+        background: var(--dm-bg-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
       }
+
       #options-frame h3 {
         margin-top: 0;
+        color: var(--dm-text-primary);
       }
 
       #about {
-        font-size: 12px;
-        margin-bottom: 30px;
+        font-size: 0.8rem;
+        color: var(--dm-text-secondary);
+        margin-bottom: 28px;
+        line-height: 1.6;
+      }
+
+      #about p {
+        margin: 0 0 8px;
+      }
+
+      #about strong {
+        color: var(--dm-text-primary);
+        font-weight: 600;
+      }
+
+      #about a {
+        color: var(--dm-accent-start);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(110, 110, 247, 0.3);
+        transition: color var(--dm-transition), border-color var(--dm-transition);
+      }
+
+      #about a:hover {
+        color: var(--dm-accent-end);
+        border-bottom-color: var(--dm-accent-end);
+      }
+
+      #about ul {
+        padding-left: 20px;
+        margin: 8px 0;
+      }
+
+      #about li {
+        margin-bottom: 4px;
+      }
+
+      #about code {
+        background: rgba(120, 100, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #c4b5fd;
+      }
+
+      #options-form p {
+        font-size: 0.75rem;
+        color: var(--dm-text-muted);
+        margin: 2px 0 6px;
       }
 
       table {
-        width: 80%;
-        
-        border-collapse: collapse; /* Ensures that the border lines between cells are single lines */
-        text-align: center; /* Centers text horizontally in each cell */
-    }
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+      }
 
-    th, td {
-        border: 1px solid #666666; /* Adds a simple black border around each cell */
-        padding: 8px; /* Adds space between cell borders and the content inside */
-    }
+      th, td {
+        border: 1px solid var(--dm-border);
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
 
-    th {
-        background-color: #f2f2f2; /* Light grey background for the header cells */
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-     
+      th {
+        background: rgba(110, 110, 247, 0.06);
+        color: var(--dm-text-primary);
+        font-weight: 600;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      td {
+        color: var(--dm-text-secondary);
+      }
+
+      /* Fade-in on load */
+      @keyframes dm-fade-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      #options-frame {
+        animation: dm-fade-in 0.5s ease-out both;
+      }
     </style>
   </head>
   <body>
     <div id="options-frame">
     <h1 id="options-title"><b>open-os</b> Extension Options</h1>
     <div id="about">
-      <p>Small open-source extension for Chromium-based browsers like Chrome, Brave, or Edge to quickly access your favorite local AI LLM assistant while browsing.</p>
-      <p>This beta is configured for Ollama models (Llama3, Phi3, Mistral, Gemma...).</p>
-      <p>Simply click on the extension icon and start chatting with your virtual assistant. Right-click on the extension icon to open a new tab.</p>
-      <p>Extension has been developed and is maintained by <a href="https://twitter.com/luishg/" target="_blank">@luishg</a> with the help of ChatGPT and Github Copilot.</p>
-      
-      <br>
-      <strong>Make sure you have installed Ollama and it is running</strong>
+      <p>Open-source browser extension for Chromium-based browsers (Chrome, Brave, Edge) that connects you to local AI models while you browse. Private, fast, and fully offline.</p>
+      <p>Powered by <a target="_blank" href="https://ollama.com/">Ollama</a> &mdash; compatible with Llama 3, Phi-3, Mistral, Gemma, and any model available in the Ollama library.</p>
+      <p>Click the extension icon to open the side panel, or right-click to launch in a new tab.</p>
+      <p>Created and maintained by <a href="https://twitter.com/luishg/" target="_blank">@luishg</a></p>
 
+      <br>
+      <strong>Getting started</strong>
       <ul>
-        <li>Download Ollama: <a target="_blank" href="https://ollama.com/">https://ollama.com/</a></li>
-        <li>Install any of the available models on Ollama. For example, for LLama3 from META, simply type "ollama run llama3:8b" in your OS terminal</li>
-        <li>Llama-3 Installation video tutorial: <a target="_blank" href="https://www.youtube.com/watch?v=7ujZ1N4Pmz8">https://www.youtube.com/watch?v=7ujZ1N4Pmz8</a></li>
+        <li>Download and install Ollama: <a target="_blank" href="https://ollama.com/">ollama.com</a></li>
+        <li>Pull a model from your terminal, e.g. <code>ollama run llama3:8b</code></li>
+        <li>Make sure Ollama is running, then open the extension and start chatting</li>
       </ul>
-      
-      </br>
+
+      <br>
       <strong>Compatible Browsers</strong>
       <br><br>
       <table>
@@ -151,24 +329,22 @@
           <td>OK</td>
         </tr>
       </table>
-      <br><br>
+      <br>
 
+      <strong>Not getting responses?</strong>
+      <p>By default, Ollama allows cross-origin requests from 127.0.0.1 and 0.0.0.0. To allow additional origins, set the <code>OLLAMA_ORIGINS</code> environment variable. <a target="_blank" href="https://github.com/ollama/ollama/blob/main/docs/faq.md">Learn more</a></p>
 
-      <strong>Not getting responses? How to expose the Ollama server.</strong>
-      <p>By default, Ollama allows cross origin requests from 127.0.0.1 and 0.0.0.0.</p>
-      <p>To support more origins, you can use the <code>OLLAMA_ORIGINS</code> environment variable: <a target="_blank" href="https://github.com/ollama/ollama/blob/main/docs/faq.md">https://github.com/ollama/ollama/blob/main/docs/faq.md</a></p>
-  
-
-      <p>For more info visit <a target="_blank" href="https://www.open-os.com" target="_blank">open-os.com</a></p>
-    </br></br>
+      <p>For more info visit <a target="_blank" href="https://www.open-os.com">open-os.com</a></p>
     </div>
     <form id="options-form">
 
       <label for="theme-select">Theme:</label>
       <p>Retro Teme Font: "More Perfect DOS VGA" by https://zehfernando.com/about/</p>
       <select id="theme-select" name="theme">
-        <option value="light" selected>Light Theme</option>
-        <option value="dark">Dark Theme</option>
+        <option value="dark-modern" selected>Dark Modern</option>
+        <option value="light-modern">Light Modern</option>
+        <option value="light">Light Classic</option>
+        <option value="dark">Dark Classic</option>
         <option value="retro">MS-DOS 6.22 Terminal</option>
         <option value="nostromo">NOSTROMO COMPUTER MU-TH-UR 6000 (Alien)</option>
       </select>
@@ -197,8 +373,8 @@
       <input type="text" id="openos-header-input" name="openos_header" placeholder="Your OpenOS header here">
 
 
-      <label display="none" for="api-key-input">OpenAI API_KEY (deprecated):</label>
-      <input display="none" type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
+      <label style="display:none" for="api-key-input">OpenAI API_KEY (deprecated):</label>
+      <input style="display:none" type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
       
       <label style="display:none" for="ai-engine-select">LLM Model:</label>
       <select style="display:none" id="ai-engine-select" name="ai_engine">
