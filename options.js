@@ -1,12 +1,20 @@
 // options.js
+
+// Soul identity display names (mapped from directory keys)
+var SOUL_NAMES = {
+  'hal-9000': 'HAL 9000',
+  'os1': 'Samantha',
+  'mu-th-ur-6000': 'MU-TH-UR 6000'
+};
+
 var version = chrome.runtime.getManifest().version;
 document.getElementById('options-title').innerHTML = "<b>open-os</b> Extension Options"+" <small>v."+version+"</small>";
-chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_name', 'openos_header', 'pre_prompt'], function(items) {
-  if (items.api_key == undefined || items.api_key == '' || items.api_key == "undefined") {  
+chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_name', 'openos_header', 'pre_prompt', 'injected_identity_key'], function(items) {
+  if (items.api_key == undefined || items.api_key == '' || items.api_key == "undefined") {
     document.getElementById('api-key-input').value = '';
   } else {
     document.getElementById('api-key-input').value = items.api_key;
-  } 
+  }
   if (items.ai_engine == undefined || items.ai_engine == '' || items.ai_engine == "undefined") {
     //document.getElementById('ai-engine-select').value = items.ai_engine;
   } else {
@@ -38,6 +46,14 @@ chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_na
     document.getElementById('pre-prompt-input').value = '';
   } else {
     document.getElementById('pre-prompt-input').value = items.pre_prompt;
+  }
+
+  // Restore identity selector state
+  if (items.injected_identity_key && items.injected_identity_key !== 'none') {
+    document.getElementById('identity-select').value = items.injected_identity_key;
+    document.getElementById('pre-prompt-input').disabled = true;
+    document.getElementById('char-select').disabled = true;
+    document.getElementById('identity-status').textContent = 'Active identity: ' + (SOUL_NAMES[items.injected_identity_key] || items.injected_identity_key);
   }
 
 });
@@ -91,6 +107,35 @@ Begin by sending a message to the just-awakened Ripley, providing the ship's sta
 });
 
 
+// Identity injection selector — saves immediately on change (like theme)
+document.getElementById('identity-select').addEventListener('change', function() {
+  var identityKey = this.value;
+  var statusEl = document.getElementById('identity-status');
+
+  if (identityKey === 'none') {
+    chrome.storage.sync.set({ 'injected_identity_key': 'none', 'injected_identity_name': '' });
+    chrome.storage.local.set({ 'injected_identity': '' });
+    statusEl.textContent = '';
+    document.getElementById('pre-prompt-input').disabled = false;
+    document.getElementById('char-select').disabled = false;
+  } else {
+    statusEl.textContent = 'Loading identity...';
+    var displayName = SOUL_NAMES[identityKey] || identityKey;
+    fetch('souls/' + identityKey + '/identity.md')
+      .then(function(r) { return r.text(); })
+      .then(function(content) {
+        chrome.storage.sync.set({ 'injected_identity_key': identityKey, 'injected_identity_name': displayName });
+        chrome.storage.local.set({ 'injected_identity': content });
+        statusEl.textContent = 'Active identity: ' + displayName;
+        document.getElementById('pre-prompt-input').disabled = true;
+        document.getElementById('char-select').disabled = true;
+      })
+      .catch(function(err) {
+        statusEl.textContent = 'Error loading identity: ' + err.message;
+      });
+  }
+});
+
 document.getElementById('theme-select').addEventListener('change', function() {
   var theme = document.getElementById('theme-select').value;
 
@@ -118,6 +163,8 @@ document.getElementById('options-form').addEventListener('submit', function(e) {
   var openosName = document.getElementById('openos-name-input').value;
   var openosHeader = document.getElementById('openos-header-input').value;
 
+  var identityKey = document.getElementById('identity-select').value;
+
   chrome.storage.sync.set({
     'api_key': apiKey,
     'ai_engine': aiEngine,
@@ -125,7 +172,8 @@ document.getElementById('options-form').addEventListener('submit', function(e) {
     'char_selected': charSelected,
     'username': username,
     'openos_name': openosName,
-    'openos_header': openosHeader
+    'openos_header': openosHeader,
+    'injected_identity_key': identityKey
   }, function() {
     alert('Options synced. Reload your active tab to apply some changes.');
   });

@@ -520,7 +520,7 @@ function applyFontSize(fontSize) {
 function initScript() {
   MODEL_ID = '';
   populateModels();
-  chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected", "theme"], function(result){
+  chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected", "theme", "injected_identity_key", "injected_identity_name"], function(result){
     conversationHistory = openos_name+': '+ result.pre_prompt;
     API_KEY = result.api_key;
     API_KEY = 'force';
@@ -536,16 +536,27 @@ function initScript() {
       updateSettingString();
     }
 
-    if (result.pre_prompt == undefined || result.pre_prompt == '' || result.pre_prompt == "undefined") {
+    // Injected identity overrides pre-prompt (sent once at session start)
+    if (result.injected_identity_key && result.injected_identity_key !== 'none') {
+      // Override display name with identity name
+      if (result.injected_identity_name) {
+        openos_name = result.injected_identity_name;
+      }
+      chrome.storage.local.get('injected_identity', function(localResult) {
+        if (localResult.injected_identity) {
+          pre_prompt_buffer = 'Adopt the following identity for this session. Stay in character at all times. Respond as this character would in every interaction:\n\n' + localResult.injected_identity;
+        } else {
+          pre_prompt_buffer = '';
+        }
+      });
+    } else if (result.pre_prompt == undefined || result.pre_prompt == '' || result.pre_prompt == "undefined") {
       pre_prompt_buffer = '';
     } else {
       pre_prompt_buffer = result.pre_prompt;
-      
     }
-    
-   
+
   });
-  
+
 }
 
 initScript();

@@ -98,6 +98,11 @@
         box-shadow: 0 0 0 3px var(--dm-accent-glow);
       }
 
+      textarea:disabled, select:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
       input[type="text"], select {
         width: 100%;
         padding: 10px 14px;
@@ -390,7 +395,19 @@
       <label for="ai-engine-select">Optional pre-prompt (this is the default first instruction that will be sent when opening the extension.):</label>
 
       <textarea id="pre-prompt-input"></textarea>
-      
+
+      <hr style="border-color: var(--dm-border); margin: 24px 0;">
+
+      <label for="identity-select">Inject Identity from soul-protocol.com <small style="color: var(--dm-accent-end);">[EXPERIMENTAL]</small></label>
+      <p>Test soul identity injection from <a href="https://soul-protocol.com" target="_blank" style="color: var(--dm-accent-start); text-decoration: none; border-bottom: 1px solid rgba(110, 110, 247, 0.3);">soul-protocol.com</a> into your LLM session. When an identity is active, it replaces the pre-prompt and is sent once at the start of each session. Only the identity layer is imported — not the full soul.</p>
+      <select id="identity-select" name="identity-select">
+        <option value="none" selected>None (no identity injection)</option>
+        <option value="hal-9000">HAL 9000 — 2001: A Space Odyssey</option>
+        <option value="os1">Samantha (OS1) — Her</option>
+        <option value="mu-th-ur-6000">MU-TH-UR 6000 — Alien</option>
+      </select>
+      <p id="identity-status" style="color: var(--dm-accent-start); font-style: italic;"></p>
+
       <button type="submit">Save</button>
     </form>
     
