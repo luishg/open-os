@@ -12,7 +12,7 @@
 
 - **Manifest V3** Chrome Extension (no build step, no bundlers)
 - **Vanilla HTML, CSS, JavaScript** — no frameworks, no transpilation
-- **Ollama API** (`localhost:11434`) — `/api/generate` for streaming chat, `/api/tags` for model listing
+- **Ollama API** (`localhost:11434`) — `/api/chat` for streaming chat, `/api/tags` for model listing
 - **Chrome Extension APIs**: `storage` (sync + local), `sidePanel`, `contextMenus`, `declarativeNetRequest`
 - **marked.min.js** — only external library, used for markdown rendering
 - **Custom fonts**: MorePerfectDOSVGA (retro theme), Berthold City Light (NOSTROMO theme)
@@ -69,12 +69,12 @@ open-os/
 ### Streaming & Chat Flow
 
 1. User submits prompt via input field (Enter key or send button)
-2. `submitRequest()` builds the payload with `{ model, prompt, context }`
-3. `postRequest()` sends POST to Ollama's `/api/generate`
+2. `submitRequest()` builds the payload with `{ model, messages }`
+3. `postRequest()` sends POST to Ollama's `/api/chat`
 4. `getResponse()` reads the streaming response via `ReadableStream`, parsing NDJSON line by line
 5. Each token is appended to the chat with a `<span class="cursor-flash">` for typing animation
 6. On completion (`parsedResponse.done`), the full response is parsed through `marked.parse()` for markdown
-7. `context` from the response is stored on the chatlog DOM element for conversation continuity
+7. Conversation continuity is maintained in-memory via `chatMessages` (`user`/`assistant` roles)
 
 ### Theme System
 
@@ -163,7 +163,7 @@ All code must pass the **Chrome Web Store review**. This means:
 
 - **Always read the full file** before modifying it. Understand the existing functions, event listeners, and DOM dependencies.
 - Check for **deprecated code** (marked with `//DEPRECATED` comments) — it exists for historical context, do not rely on it for new features.
-- The `context` property is stored on the DOM element (`chatlog.context`) — this is intentional for conversation continuity with Ollama.
+- Conversation state is kept in the `chatMessages` array and sent with each `/api/chat` request.
 - Sound effects and MutationObserver in `themes/nostromo/nostromo.js` are theme-specific — changes to chatlog DOM structure can break the NOSTROMO experience.
 
 ### 7. DESIGN VISION — Sci-Fi Human-Computer Interface
@@ -182,7 +182,7 @@ The project aesthetic is **modern, futuristic, and cinematic**:
 When writing code that interacts with these systems, consult their documentation:
 
 - **Chrome Extensions Manifest V3**: permissions, service workers, side panel API, storage API, declarativeNetRequest
-- **Ollama API**: `/api/generate` (streaming), `/api/tags` (model listing), CORS configuration
+- **Ollama API**: `/api/chat` (streaming), `/api/tags` (model listing), CORS configuration
 - **marked.js**: markdown parsing options and security considerations
 - **Web standards**: Fetch API streaming, ReadableStream, NDJSON parsing
 
