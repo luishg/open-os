@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "open-os LLM Browser Extension",
-  "version": "1.01",
+  "version": "1.02",
   "description": "Quick access to your favorite local LLM from your browser (Ollama).",
   "icons": {
     "128": "open-os-128.png"
@@ -17,10 +17,7 @@
     "service_worker": "background.js"
   },
   "host_permissions": [
-    "http://localhost:11434/api/tags",
-    "http://localhost:11434/api/generate",
-    "https://localhost:11434/api/tags",
-    "https://localhost:11434/api/generate"
+    "http://localhost:11434/*"
   ],
   
   "side_panel": {
@@ -32,4 +29,3 @@
   } 
   
 }
-
