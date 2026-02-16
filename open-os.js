@@ -50,7 +50,8 @@ var pre_prompt_buffer = '';
 var rebuildRules = undefined;
 
 if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
-    rebuildRules = async function (domain) {
+    rebuildRules = async function (domain, protocol) {
+    protocol = protocol || 'http';
     const domains = [domain];
     /** @type {chrome.declarativeNetRequest.Rule[]} */
     const rules = [{
@@ -63,7 +64,7 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
         requestHeaders: [{
           header: 'origin',
           operation: 'set',
-          value: `http://${domain}`,
+          value: `${protocol}://${domain}`,
         }],
       },
     }];
@@ -80,10 +81,7 @@ marked.use({
   headerIds: false
 });
 
-//set domain ORIGIN to localhost
-if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
-  rebuildRules('localhost');
-} 
+// rebuildRules is now called inside initScript() after loading the host from storage
 
 
 // API Function to send a POST request to the Ollama
@@ -481,7 +479,28 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
   if (changes.fontSize) {
     applyFontSize(changes.fontSize.newValue);
   }
+  if (changes.ollama_host) {
+    applyOllamaHost(changes.ollama_host.newValue);
+  }
 });
+
+async function applyOllamaHost(newHost) {
+  ollama_host = (newHost && newHost !== '') ? newHost : 'http://localhost:11434';
+
+  if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id && rebuildRules) {
+    try {
+      var parsed = new URL(ollama_host);
+      await rebuildRules(parsed.hostname, parsed.protocol.replace(':', ''));
+    } catch(e) {
+      await rebuildRules('localhost');
+    }
+  }
+
+  updateSettingString();
+  var selectElement = document.getElementById('model-select');
+  selectElement.innerHTML = '';
+  populateModels();
+}
 
 function applyTheme(theme) {
   var themeStyle = document.getElementById('theme');
@@ -520,8 +539,25 @@ function applyFontSize(fontSize) {
 
 }
 
-function initScript() {
+async function initScript() {
   MODEL_ID = '';
+
+  // Load custom host from storage before connecting
+  if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
+    try {
+      var hostResult = await new Promise(function(resolve) {
+        chrome.storage.sync.get('ollama_host', function(result) { resolve(result); });
+      });
+      if (hostResult.ollama_host && hostResult.ollama_host !== '') {
+        ollama_host = hostResult.ollama_host;
+      }
+      var parsed = new URL(ollama_host);
+      await rebuildRules(parsed.hostname, parsed.protocol.replace(':', ''));
+    } catch(e) {
+      await rebuildRules('localhost');
+    }
+  }
+
   populateModels();
   chrome.storage.sync.get(["pre_prompt","api_key","ai_engine", "char_selected", "theme", "injected_identity_key", "injected_identity_name"], function(result){
     conversationHistory = openos_name+': '+ result.pre_prompt;

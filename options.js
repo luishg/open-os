@@ -7,9 +7,26 @@ var SOUL_NAMES = {
   'mu-th-ur-6000': 'MU-TH-UR 6000'
 };
 
+function parseOllamaHost(input) {
+  var trimmed = (input || '').trim().replace(/\/+$/, '');
+  if (!trimmed) {
+    return { valid: true, url: 'http://localhost:11434', hostname: 'localhost', isDefault: true };
+  }
+  try {
+    var parsed = new URL(trimmed);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return { valid: false, error: 'Only http:// and https:// protocols are supported.' };
+    }
+    var isDefault = (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') && parsed.port === '11434';
+    return { valid: true, url: parsed.origin, hostname: parsed.hostname, isDefault: isDefault };
+  } catch (e) {
+    return { valid: false, error: 'Invalid URL format. Example: http://192.168.1.100:11434' };
+  }
+}
+
 var version = chrome.runtime.getManifest().version;
 document.getElementById('options-title').innerHTML = "<b>open-os</b> Extension Options"+" <small>v."+version+"</small>";
-chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_name', 'openos_header', 'pre_prompt', 'injected_identity_key'], function(items) {
+chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_name', 'openos_header', 'pre_prompt', 'injected_identity_key', 'ollama_host'], function(items) {
   if (items.api_key == undefined || items.api_key == '' || items.api_key == "undefined") {
     document.getElementById('api-key-input').value = '';
   } else {
@@ -46,6 +63,10 @@ chrome.storage.sync.get(['api_key', 'ai_engine', 'theme', 'username', 'openos_na
     document.getElementById('pre-prompt-input').value = '';
   } else {
     document.getElementById('pre-prompt-input').value = items.pre_prompt;
+  }
+
+  if (items.ollama_host && items.ollama_host !== '' && items.ollama_host !== 'http://localhost:11434') {
+    document.getElementById('ollama-host-input').value = items.ollama_host;
   }
 
   // Restore identity selector state
@@ -154,7 +175,7 @@ document.getElementById('font-size-select').addEventListener('change', function(
 
 document.getElementById('options-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  
+
   var apiKey = document.getElementById('api-key-input').value;
   var aiEngine = document.getElementById('ai-engine-select').value;
   var prePrompt = document.getElementById('pre-prompt-input').value;
@@ -162,19 +183,50 @@ document.getElementById('options-form').addEventListener('submit', function(e) {
   var username = document.getElementById('username-input').value;
   var openosName = document.getElementById('openos-name-input').value;
   var openosHeader = document.getElementById('openos-header-input').value;
-
   var identityKey = document.getElementById('identity-select').value;
 
-  chrome.storage.sync.set({
-    'api_key': apiKey,
-    'ai_engine': aiEngine,
-    'pre_prompt': prePrompt,
-    'char_selected': charSelected,
-    'username': username,
-    'openos_name': openosName,
-    'openos_header': openosHeader,
-    'injected_identity_key': identityKey
-  }, function() {
-    alert('Options synced. Reload your active tab to apply some changes.');
-  });
+  var ollamaHostRaw = document.getElementById('ollama-host-input').value;
+  var hostResult = parseOllamaHost(ollamaHostRaw);
+  var hostStatusEl = document.getElementById('host-permission-status');
+
+  if (!hostResult.valid) {
+    hostStatusEl.textContent = hostResult.error;
+    hostStatusEl.style.color = '#ff6b6b';
+    return;
+  }
+
+  function saveAllSettings(hostUrl) {
+    chrome.storage.sync.set({
+      'api_key': apiKey,
+      'ai_engine': aiEngine,
+      'pre_prompt': prePrompt,
+      'char_selected': charSelected,
+      'username': username,
+      'openos_name': openosName,
+      'openos_header': openosHeader,
+      'injected_identity_key': identityKey,
+      'ollama_host': hostUrl
+    }, function() {
+      hostStatusEl.textContent = 'Host: ' + hostUrl;
+      hostStatusEl.style.color = 'var(--dm-accent-start)';
+      alert('Options synced. Reload your active tab to apply some changes.');
+    });
+  }
+
+  if (hostResult.isDefault) {
+    saveAllSettings(hostResult.url);
+  } else {
+    chrome.permissions.request({
+      origins: [hostResult.url + '/*']
+    }, function(granted) {
+      if (granted) {
+        saveAllSettings(hostResult.url);
+      } else {
+        hostStatusEl.textContent = 'Permission denied. Cannot access ' + hostResult.url + '. Reverting to default.';
+        hostStatusEl.style.color = '#ff6b6b';
+        document.getElementById('ollama-host-input').value = '';
+        saveAllSettings('http://localhost:11434');
+      }
+    });
+  }
 });

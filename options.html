@@ -379,6 +379,11 @@
       <input type="text" id="openos-header-input" name="openos_header" placeholder="Your OpenOS header here">
 
 
+      <label for="ollama-host-input">Ollama Host URL:</label>
+      <p>Default: http://localhost:11434. Change this to connect to a remote Ollama server.</p>
+      <input type="text" id="ollama-host-input" name="ollama_host" placeholder="http://localhost:11434">
+      <p id="host-permission-status" style="color: var(--dm-accent-start); font-style: italic;"></p>
+
       <label style="display:none" for="api-key-input">OpenAI API_KEY (deprecated):</label>
       <input style="display:none" type="text" disabled id="api-key-input" name="api_key" placeholder="Paste here your API KEY">
       
