@@ -135,3 +135,4 @@ Retro theme font: "More Perfect DOS VGA" by [Zeh Fernando](https://zehfernando.c
 
 - [Website](https://www.open-os.com)
 - [Chrome Web Store](https://chromewebstore.google.com/detail/open-os-llm-browser-exten/kgeinnbgpilffgaipgihigcphcokellk)
+- [Privacy Policy](https://open-os.com/privacy.html)
